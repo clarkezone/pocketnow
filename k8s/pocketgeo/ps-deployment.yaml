@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pg-deployment
+  labels:
+    app: pocketgeo-pg
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: pocketgeo-pg
+  template:
+    metadata:
+      labels:
+        app: pocketgeo-pg
+    spec:
+      containers:
+      - name: pocketgeo
+        image: registry.dev.clarkezone.dev/pocketgeotemp:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+          - name: POCKET_SHORTEN_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: psconfig
+                key: UN
+          - name: POCKET_DB_URL
+            valueFrom:
+              configMapKeyRef:
+                name: psconfig
+                key: URL
+          - name: POCKET_SHORTEN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-user-pass
+                key: PW

@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pb-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: https
+    cert-manager.io/cluster-issuer: cloudflare
+spec:
+  tls:
+  - hosts:
+    - pocket-shortner-stage.dev.clarkezone.dev
+    secretName: pb-stage-tls
+  rules:
+  - host: pocket-shortner-stage.dev.clarkezone.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: pb-service
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix

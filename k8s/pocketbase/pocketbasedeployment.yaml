@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pocketbasedeployment
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: pocketshortener-db
+  template:
+    metadata:
+    spec:
+      containers:
+      - name: pocketbase
+        image: registry.dev.clarkezone.dev/pocketbase:arm64d
+        imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /data
+            name: db-volume
+        ports:
+        - containerPort: 8080
+      volumes:
+        - name: db-volume
+          persistentVolumeClaim:
+            claimName: db-pvc

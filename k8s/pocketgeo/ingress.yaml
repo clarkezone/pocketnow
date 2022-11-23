@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pocketgeo
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: https
+    cert-manager.io/cluster-issuer: cloudflare
+spec:
+  tls:
+  - hosts:
+    - pocketgeo.dev.clarkezone.dev
+    secretName: pocketgeo-tls
+  rules:
+  - host: pocketgeo.dev.clarkezone.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: pg-service
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+

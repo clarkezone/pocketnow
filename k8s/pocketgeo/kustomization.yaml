@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: pocketshortener
+resources:
+- ps-deployment.yaml
+- ps-service.yaml
+- ingress.yaml
+  #- cloudflared.yaml
+secretGenerator:
+- name: db-user-pass
+  envs:
+  - .env.password
+- name: cloudflare-blog-cert
+  files:
+  - secrets/cert.pem
+- name: cloudflare-blog-creds
+  files:
+  - secrets/ca4d7eda-b9fa-4477-92dc-e7b18f40bf4f.json
+configMapGenerator:
+- name: psconfig
+  literals:
+  - UN=james@clarkezone.net
+  - URLold=https://pocket-shortner-stage.dev.clarkezone.dev/
+  - URL=http://pb-service:8080
+- name: cloudflare-blog-configs
+  files:
+  - config/config.yaml
