@@ -5,12 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"github.com/fasthttp/router"
+	"github.com/r--w/pocketbase"
 	"github.com/valyala/fasthttp"
-	"test.com/geo/pkg/pocketbase"
 )
 
 type authresponse struct {
@@ -277,7 +276,7 @@ func home(ctx *fasthttp.RequestCtx) {
 
 func NewDbLayer(url string, un string, pw string) *dbLayer {
 	db := &dbLayer{}
-	db.db = pocketbase.NewClient(url, un, pw)
+	db.db = pocketbase.NewClient(url, pocketbase.WithAdminEmailPassword(un, pw))
 	return db
 }
 
@@ -313,9 +312,13 @@ func (d *dbLayer) geopost(ctx *fasthttp.RequestCtx) {
 }
 
 func main() {
-	user := os.Getenv("POCKET_SHORTEN_USERNAME")
-	pass := os.Getenv("POCKET_SHORTEN_PASSWORD")
-	url := os.Getenv("POCKET_DB_URL")
+	//user := os.Getenv("POCKET_SHORTEN_USERNAME")
+	//pass := os.Getenv("POCKET_SHORTEN_PASSWORD")
+	//url := os.Getenv("POCKET_DB_URL")
+
+	url := "http://127.0.0.1:9099"
+	user := "james@clarkezone.net"
+	pass := "winBlue.,.,"
 
 	db := NewDbLayer(url, user, pass)
 
@@ -388,7 +391,7 @@ func writeCurrent(jsonString []byte, writeclient *pocketbase.Client) {
 			err = writeclient.Update("currentsitrep", recid, string(bytes))
 			if err != nil {
 				log.Print("update failed, trying create", err)
-				err = writeclient.Create("currentsitrep", string(bytes))
+				_, err = writeclient.Create("currentsitrep", string(bytes))
 				if err != nil {
 					log.Printf("Create failed %v", err.Error())
 				}
