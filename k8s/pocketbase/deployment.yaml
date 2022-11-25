@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pocketbasedeployment
+  name: pocketnow
 spec:
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: pocketshortener-db
+      app: kustomize
   template:
     metadata:
     spec:
       containers:
-      - name: pocketbase
-        image: registry.dev.clarkezone.dev/pocketbase:arm64d
+      - name: pocketnow-db
+        image: registry.dev.clarkezone.dev/pocketbase:latest
         imagePullPolicy: Always
         volumeMounts:
           - mountPath: /data

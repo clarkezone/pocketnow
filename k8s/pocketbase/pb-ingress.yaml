@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - pocket-shortner-stage.dev.clarkezone.dev
+    - pocketnow-db.dev.clarkezone.dev
     secretName: pb-stage-tls
   rules:
-  - host: pocket-shortner-stage.dev.clarkezone.dev
+  - host: pocketnow-db.dev.clarkezone.dev
     http:
       paths:
       - backend:

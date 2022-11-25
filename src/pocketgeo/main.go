@@ -312,13 +312,9 @@ func (d *dbLayer) geopost(ctx *fasthttp.RequestCtx) {
 }
 
 func main() {
-	//user := os.Getenv("POCKET_SHORTEN_USERNAME")
-	//pass := os.Getenv("POCKET_SHORTEN_PASSWORD")
-	//url := os.Getenv("POCKET_DB_URL")
-
-	url := "http://127.0.0.1:9099"
-	user := "james@clarkezone.net"
-	pass := "winBlue.,.,"
+	user := os.Getenv("POCKET_SHORTEN_USERNAME")
+	pass := os.Getenv("POCKET_SHORTEN_PASSWORD")
+	url := os.Getenv("POCKET_DB_URL")
 
 	db := NewDbLayer(url, user, pass)
 
