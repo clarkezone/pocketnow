@@ -2,8 +2,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /source
 
-RUN dotnet tool install --tool-path ./ dotnet-certificate-tool
-
 # copy csproj and restore as distinct layers
 COPY *.csproj ./
 RUN dotnet restore

@@ -42,7 +42,8 @@ app.MapGet("/geocode", async () =>
         {
             City = add?.address.City??"",
             PhoneStatus = item.batterystate,
-            Batterylevel = item.batterylevel
+            Batterylevel = item.batterylevel,
+	    TimeStamp = DateTime.Parse(item.timestamp).ToLocalTime()
         };
         return Results.Json(r);
     }
@@ -60,8 +61,8 @@ public class Returned
 {
     public string City { get; set; }
     public string PhoneStatus { get; set; }
-
     public float Batterylevel { get; set; }
+    public DateTime TimeStamp { get; set; }
 }
 
 public class AddressRec
