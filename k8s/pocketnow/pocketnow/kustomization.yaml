@@ -1,10 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: pocketnow
+commonLabels:
+  app: pocketnow-frontend
 resources:
 - deployment.yaml
 - service.yaml
-- ingress.yaml
 secretGenerator:
 - name: db-user-pass
   envs:
@@ -13,5 +14,4 @@ configMapGenerator:
 - name: psconfig
   literals:
   - UN=james@clarkezone.net
-  - URLold=https://pocket-shortner-stage.dev.clarkezone.dev/
-  - URL=http://pb-service:8080
+  - HOST=http://pb-service:8080

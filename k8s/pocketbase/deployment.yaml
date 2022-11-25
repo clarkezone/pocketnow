@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pocketnow
+  name: pocketbase
 spec:
   strategy:
     type: Recreate
