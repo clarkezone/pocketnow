@@ -24,6 +24,7 @@ class GeoService
     {
         string city = string.Empty;
         //TODO need to cache city more losely, not for every point
+        //TODO contain a max size
         if (cityCach.ContainsKey((lat, lon)))
         {
             city = cityCach[(lat, lon)];
