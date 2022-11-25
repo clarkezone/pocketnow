@@ -35,10 +35,14 @@ app.MapGet("/", async () =>
         var item = root.items[0];
         var lat = item.lat;
         var lon = item.lon;
-        var city = await geoService.AddressFromPoint(item, lat, lon);
+        var address = await geoService.AddressFromPoint(item, lat, lon);
         Returned r = new Returned()
         {
-            City = city ?? "",
+            City = address?.address?.City??"",
+            Neighborhood = address?.address?.Neighborhood??"",
+            Country = address?.address?.CountryCode??"",
+            MetroArea = address?.address?.MetroArea??"",
+            Postal = address?.address?.Postal??"",
             PhoneStatus = item.batterystate,
             Batterylevel = item.batterylevel,
             TimeStamp = DateTime.Parse(item.timestamp).ToLocalTime()
@@ -58,7 +62,11 @@ internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary
 public class Returned
 {
     public string City { get; set; }
+    public string Neighborhood {get; set;}
+    public string MetroArea {get; set;}
     public string PhoneStatus { get; set; }
+    public string Postal {get; set;}
+    public string Country {get;set;}
     public float Batterylevel { get; set; }
     public DateTime TimeStamp { get; set; }
 }
