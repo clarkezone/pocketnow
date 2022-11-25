@@ -21,8 +21,9 @@ Authorizor a = new Authorizor(pbhost, un, pw);
 var result = await a.Authorize();
 Console.WriteLine($"Result from auth {result}");
 var client = a.GetClient();
+var geoService = new GeoService();
 
-app.MapGet("/geocode", async () =>
+app.MapGet("/", async () =>
 {
     if (client == null)
     {
@@ -32,18 +33,15 @@ app.MapGet("/geocode", async () =>
     if (root != null && root.items.Length > 0)
     {
         var item = root.items[0];
-        HttpClient http = new HttpClient();
         var lat = item.lat;
         var lon = item.lon;
-        var result = await http.GetAsync("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=" + lat + "," + lon + "&outSR=4326&f=json");
-        var add = await result.Content.ReadFromJsonAsync<Root>();
-        Debug.WriteLine(add?.address.City);
-        var r = new Returned()
+        var city = await geoService.AddressFromPoint(item, lat, lon);
+        Returned r = new Returned()
         {
-            City = add?.address.City??"",
+            City = city ?? "",
             PhoneStatus = item.batterystate,
             Batterylevel = item.batterylevel,
-	    TimeStamp = DateTime.Parse(item.timestamp).ToLocalTime()
+            TimeStamp = DateTime.Parse(item.timestamp).ToLocalTime()
         };
         return Results.Json(r);
     }
