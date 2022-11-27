@@ -4,7 +4,7 @@ metadata:
   name: pb-service
 spec:
   selector:
-    app: pocketshortener-db
+    app: pocketnow-db
   ports:
   - name: "http"
     port: 8080
