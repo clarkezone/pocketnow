@@ -1,0 +1,19 @@
+syntax = "proto3";
+package GreetingServer;
+option go_package = "github.com/clakezone/geocache/greetingservice";
+import "google/protobuf/timestamp.proto";
+
+service Greeter {
+    rpc GetGreeting(Empty) returns (Greeting){}
+}
+
+message Empty {
+    string id = 1;
+}
+
+message Greeting {
+    int32 id = 1;
+    string name = 2;
+    string greeting = 3;
+    google.protobuf.Timestamp last_updated = 4;
+}
