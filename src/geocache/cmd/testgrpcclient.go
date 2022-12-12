@@ -11,7 +11,7 @@ import (
 
 	"github.com/clarkezone/geocache/internal"
 	"github.com/clarkezone/geocache/pkg/config"
-	"github.com/clarkezone/geocache/pkg/greetingservice"
+	"github.com/clarkezone/geocache/pkg/geocacheservice"
 	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -43,12 +43,12 @@ have already been started with the testservergrpc command`,
 			defer conn.Close()
 
 			if err == nil {
-				client := greetingservice.NewGreeterClient(conn)
-				result, err := client.GetGreeting(context.Background(), &greetingservice.Empty{})
+				client := geocacheservice.NewGeoCacheServiceClient(conn)
+				_, err := client.SaveLocations(context.Background(), &geocacheservice.Locations{})
 				if err != nil {
 					clarkezoneLog.Errorf("Error %v", err)
 				} else {
-					clarkezoneLog.Successf("Result %v", result.Name+result.Greeting)
+					clarkezoneLog.Successf("Result received")
 				}
 			}
 

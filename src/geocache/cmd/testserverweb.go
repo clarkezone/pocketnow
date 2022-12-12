@@ -7,19 +7,15 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 */
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 
 	"github.com/clarkezone/geocache/internal"
 	"github.com/clarkezone/geocache/pkg/basicserver"
 	"github.com/clarkezone/geocache/pkg/config"
-	"github.com/clarkezone/geocache/pkg/greetingservice"
 	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
 var bsweb = basicserver.CreateBasicServer()
@@ -65,33 +61,7 @@ func getHelloHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var message string
 
-		if viper.GetString(internal.ServiceURLVar) != "" {
-			conn, err := grpc.Dial(internal.ServiceURL, grpc.WithTransportCredentials(insecure.NewCredentials()))
-			if err != nil {
-				clarkezoneLog.Errorf("fail to dial: %v", err)
-			}
-			defer conn.Close()
-
-			if err == nil {
-				client := greetingservice.NewGreeterClient(conn)
-				result, err := client.GetGreeting(context.Background(), &greetingservice.Empty{})
-				if err != nil {
-					clarkezoneLog.Errorf("Error %v", err)
-				} else {
-					clarkezoneLog.Successf("Result %v from %v", result.Greeting, result.Name)
-					message = fmt.Sprintf("%v from %v at %v<br>", result.Name, result.Greeting, result.LastUpdated)
-				}
-			} else {
-				clarkezoneLog.Errorf("Error %v", err)
-				w.WriteHeader(http.StatusInternalServerError)
-				_, err := w.Write([]byte("500 - Something bad happened!"))
-				if err != nil {
-					clarkezoneLog.Errorf("Error %v", err)
-				}
-			}
-		} else {
-			message = fmt.Sprintln("Hello World<br>")
-		}
+		message = fmt.Sprintln("Hello World<br>")
 
 		_, err := w.Write([]byte(message))
 		if err != nil {

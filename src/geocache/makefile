@@ -81,8 +81,8 @@ build:
 
 .PHONY: buildproto
 buildproto:
-	mkdir -p pkg/greetingservice && protoc -I proto --go_out=pkg/greetingservice --go_opt=paths=source_relative \
-          --go-grpc_out=pkg/greetingservice --go-grpc_opt=paths=source_relative \
+	mkdir -p pkg/geocacheservice && protoc -I proto --go_out=pkg/geocacheservice --go_opt=paths=source_relative \
+          --go-grpc_out=pkg/geocacheservice --go-grpc_opt=paths=source_relative \
           proto/*.proto
 
 .PHONY: buildimage

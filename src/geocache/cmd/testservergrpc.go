@@ -10,7 +10,7 @@ import (
 	"github.com/clarkezone/geocache/internal"
 	"github.com/clarkezone/geocache/pkg/basicserver"
 	"github.com/clarkezone/geocache/pkg/config"
-	"github.com/clarkezone/geocache/pkg/greetingservice"
+	"github.com/clarkezone/geocache/pkg/geocacheservice"
 	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -44,7 +44,7 @@ to quickly create a Cobra application.`,
 			bsGrpc.StartMetrics()
 			clarkezoneLog.Successf("Starting metrics on port %v", internal.MetricsPort)
 			serv := bsGrpc.StartListen("")
-			greetingservice.RegisterGreeterServer(serv, &greetingservice.GreetingServer{})
+			geocacheservice.RegisterGeoCacheServiceServer(serv, &geocacheservice.GeocacheServiceImpl{})
 			return bsGrpc.WaitforInterupt()
 		},
 	}

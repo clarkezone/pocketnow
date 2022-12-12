@@ -1,6 +1,6 @@
 syntax = "proto3";
-package GreetingServer;
-option go_package = "github.com/clakezone/geocache/greetingservice";
+package Geocacheservice;
+option go_package = "github.com/clakezone/geocache/geocacheservice";
 import "google/protobuf/timestamp.proto";
 
 message Empty {
