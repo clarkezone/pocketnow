@@ -4,14 +4,14 @@ namespace: pocketnow
 commonLabels:
   app: pocketnow-frontend
 resources:
-- deployment.yaml
-- service.yaml
+  - deployment.yaml
+  - service.yaml
 secretGenerator:
-- name: db-user-pass
-  envs:
-  - .env.password
+  - name: db-user-pass
+    envs:
+      - .env.password
 configMapGenerator:
-- name: psconfig
-  literals:
-  - UN=james@clarkezone.net
-  - HOST=http://pb-service:8080
+  - name: psconfig
+    literals:
+      - UN=james@clarkezone.net
+      - HOST=http://pb-service:8080

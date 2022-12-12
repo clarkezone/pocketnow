@@ -4,8 +4,8 @@ namespace: pocketnow
 commonLabels:
   app: pocketnow-db
 resources:
-- namespace.yaml
-- deployment.yaml
-- persistentvolumeclaim.yaml
-- pb-service.yaml
-- pb-ingress.yaml
+  - namespace.yaml
+  - deployment.yaml
+  - persistentvolumeclaim.yaml
+  - pb-service.yaml
+  - pb-ingress.yaml

@@ -6,5 +6,5 @@ spec:
   selector:
     app: kust
   ports:
-  - name: "http"
-    port: 5000
+    - name: "http"
+      port: 5000

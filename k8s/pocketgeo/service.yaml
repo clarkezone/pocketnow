@@ -6,5 +6,5 @@ spec:
   selector:
     app: pocketgeo-pg
   ports:
-  - name: "http"
-    port: 8080
+    - name: "http"
+      port: 8080

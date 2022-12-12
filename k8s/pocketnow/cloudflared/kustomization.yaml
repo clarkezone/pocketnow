@@ -4,15 +4,15 @@ namespace: pocketnow
 commonLabels:
   app: pocketnow-stage-cloudflared
 resources:
-- cloudflared.yaml
+  - cloudflared.yaml
 secretGenerator:
-- name: cloudflare-blog-cert
-  files:
-  - secrets/cert.pem
-- name: cloudflare-blog-creds
-  files:
-  - secrets/395f1f03-b92c-4750-8de8-547ac715a4a7.json
+  - name: cloudflare-blog-cert
+    files:
+      - secrets/cert.pem
+  - name: cloudflare-blog-creds
+    files:
+      - secrets/395f1f03-b92c-4750-8de8-547ac715a4a7.json
 configMapGenerator:
-- name: cloudflare-blog-configs
-  files:
-  - config/config.yaml
+  - name: cloudflare-blog-configs
+    files:
+      - config/config.yaml

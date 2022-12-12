@@ -12,15 +12,15 @@ spec:
     metadata:
     spec:
       containers:
-      - name: pocketnow-db
-        #        image: registry.dev.clarkezone.dev/pocketbase:latest
-        image: registry.dev.clarkezone.dev/pocketbase:v0.8.0
-        imagePullPolicy: Always
-        volumeMounts:
-          - mountPath: /data
-            name: db-volume
-        ports:
-        - containerPort: 8080
+        - name: pocketnow-db
+          #        image: registry.dev.clarkezone.dev/pocketbase:latest
+          image: registry.dev.clarkezone.dev/pocketbase:v0.8.0
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /data
+              name: db-volume
+          ports:
+            - containerPort: 8080
       volumes:
         - name: db-volume
           persistentVolumeClaim:

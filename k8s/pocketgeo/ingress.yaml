@@ -9,18 +9,17 @@ metadata:
     cert-manager.io/cluster-issuer: cloudflare
 spec:
   tls:
-  - hosts:
-    - pocketgeo.dev.clarkezone.dev
-    secretName: pocketgeo-tls
+    - hosts:
+        - pocketgeo.dev.clarkezone.dev
+      secretName: pocketgeo-tls
   rules:
-  - host: pocketgeo.dev.clarkezone.dev
-    http:
-      paths:
-      - backend:
-          service:
-            name: pg-service
-            port:
-              number: 8080
-        path: /
-        pathType: Prefix
-
+    - host: pocketgeo.dev.clarkezone.dev
+      http:
+        paths:
+          - backend:
+              service:
+                name: pg-service
+                port:
+                  number: 8080
+            path: /
+            pathType: Prefix

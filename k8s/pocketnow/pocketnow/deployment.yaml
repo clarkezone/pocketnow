@@ -16,24 +16,24 @@ spec:
         app: kust
     spec:
       containers:
-      - name: pocketnow-frontend
-        image: registry.dev.clarkezone.dev/pocketnow:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 5000
-        env:
-          - name: UN
-            valueFrom:
-              configMapKeyRef:
-                name: psconfig
-                key: UN
-          - name: HOST
-            valueFrom:
-              configMapKeyRef:
-                name: psconfig
-                key: HOST
-          - name: PW
-            valueFrom:
-              secretKeyRef:
-                name: db-user-pass
-                key: PW
+        - name: pocketnow-frontend
+          image: registry.dev.clarkezone.dev/pocketnow:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          env:
+            - name: UN
+              valueFrom:
+                configMapKeyRef:
+                  name: psconfig
+                  key: UN
+            - name: HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: psconfig
+                  key: HOST
+            - name: PW
+              valueFrom:
+                secretKeyRef:
+                  name: db-user-pass
+                  key: PW
