@@ -96,28 +96,7 @@ func getGeoHandler() func(w http.ResponseWriter, r *http.Request) {
 		clarkezoneLog.Debugf("Got a geocoordinate %v", dresp.Locations[0].Geometry.Coordinates[0])
 
 		if viper.GetString(internal.ServiceURLVar) != "" {
-			conn, err := grpc.Dial(internal.ServiceURL, grpc.WithTransportCredentials(insecure.NewCredentials()))
-			if err != nil {
-				clarkezoneLog.Errorf("fail to dial: %v", err)
-			}
-			defer conn.Close()
-
-			if err == nil {
-				client := geocacheservice.NewGeoCacheServiceClient(conn)
-				_, err := client.SaveLocations(context.Background(), &geocacheservice.Locations{})
-				if err != nil {
-					clarkezoneLog.Errorf("Error %v", err)
-				} else {
-					clarkezoneLog.Successf("Result received")
-				}
-			} else {
-				clarkezoneLog.Errorf("Error %v", err)
-				w.WriteHeader(http.StatusInternalServerError)
-				_, err := w.Write([]byte("500 - Something bad happened!"))
-				if err != nil {
-					clarkezoneLog.Errorf("Error %v", err)
-				}
-			}
+			newFunction(w)
 		} else {
 			clarkezoneLog.Debugf("Envalid ServiceURL, unable to write data %v", internal.ServiceURL)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -139,6 +118,37 @@ func getGeoHandler() func(w http.ResponseWriter, r *http.Request) {
 			clarkezoneLog.Debugf("Failed to write response %v\n", err)
 		}
 
+	}
+}
+
+func newFunction(w http.ResponseWriter) {
+	conn, err := grpc.Dial(internal.ServiceURL, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		clarkezoneLog.Errorf("fail to dial: %v", err)
+	}
+	defer conn.Close()
+
+	if err == nil {
+		client := geocacheservice.NewGeoCacheServiceClient(conn)
+		locs := &geocacheservice.Locations{}
+		for i := range dresp.Locations {
+			clarkezoneLog.Debugf("Got a geocoordinate %v", i.Geometry.Coordinates[0])
+			locs.Locations = append(locs.Locations, &geocacheservice.Location{
+				Latitude: dresp.Locations[i].Geometry.Coordinates[0]})
+		}
+		_, err := client.SaveLocations(context.Background())
+		if err != nil {
+			clarkezoneLog.Errorf("Error %v", err)
+		} else {
+			clarkezoneLog.Successf("Result received")
+		}
+	} else {
+		clarkezoneLog.Errorf("Error %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		_, err := w.Write([]byte("500 - Something bad happened!"))
+		if err != nil {
+			clarkezoneLog.Errorf("Error %v", err)
+		}
 	}
 }
 
