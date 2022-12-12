@@ -9,3 +9,4 @@ cli
 bin/*
 coverage.txt
 dist
+geocache
