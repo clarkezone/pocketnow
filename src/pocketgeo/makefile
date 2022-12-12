@@ -31,9 +31,8 @@ endif
 
 BINDIR    := $(CURDIR)/bin
 PLATFORMS := linux/amd64/rk-Linux-x86_64 darwin/amd64/rk-Darwin-x86_64 windows/amd64/rk.exe linux/arm64/rk-Linux-arm64 darwin/arm64/rk-Darwin-arm64
-# dlv exec ./bin/previewd --headless --listen=:2345 --log --api-version=2 -- testserver --loglevel=debug
 BUILDCOMMANDDEBUG := go build -gcflags "all=-N -l" -tags "osusergo netgo static_build"
-BUILDCOMMAND := go build -trimpath -ldflags "-s -w -X github.com/clarkezone/previewd/pkg/config.VersionHash=${VERSION_HASH} -X github.com/clarkezone/previewd/pkg/config.VersionString=${VERSION_STRING}" -tags "osusergo netgo static_build"
+BUILDCOMMAND := go build -trimpath -ldflags "-s -w -X github.com/clarkezone/geocache/pkg/config.VersionHash=${VERSION_HASH} -X github.com/clarkezone/geocache/pkg/config.VersionString=${VERSION_STRING}" -tags "osusergo netgo static_build"
 temp = $(subst /, ,$@)
 os = $(word 1, $(temp))
 arch = $(word 2, $(temp))
@@ -53,7 +52,7 @@ install-tools:
 	go install github.com/uw-labs/strongbox@latest
 	go install github.com/mgechev/revive@latest
 
-# export $(cat ~/.previewd_test.env | xargs)
+# export $(cat ~/.geocache.env | xargs)
 .PHONY: test
 test:
 	go test -p 4 -coverprofile=coverage.txt -covermode=atomic ./...
@@ -89,7 +88,7 @@ lint:
 manifestexists:
 	$(eval IMG := "pocketgeotemp")
 	$(eval VERSION := "latest")
-	
+
 	@echo ${IMG}
 	@echo ${VERSION}
 
@@ -100,7 +99,7 @@ manifestexists:
 buildimage:
 	$(eval IMG := "pocketgeotemp")
 	$(eval VERSION := "latest")
-	
+
 	@echo ${IMG}
 	@echo ${VERSION}
 
@@ -108,7 +107,7 @@ buildimage:
 
 	podman build --arch=amd64 -t ${IMG}:${VERSION}.amd64 -f Dockerfile
 	podman build --arch=arm64 -t ${IMG}:${VERSION}.arm64 -f Dockerfile
-	
+
 	podman manifest create ${IMG}:${VERSION}
 	podman manifest add ${IMG}:${VERSION} containers-storage:localhost/${IMG}:${VERSION}.amd64
 	podman manifest add ${IMG}:${VERSION} containers-storage:localhost/${IMG}:${VERSION}.arm64
@@ -117,7 +116,7 @@ buildimage:
 pushimage:
 	$(eval IMG := "pocketgeotemp")
 	$(eval VERSION := "latest")
-	
+
 	@echo ${IMG}
 	@echo ${VERSION}
 

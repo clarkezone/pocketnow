@@ -44,7 +44,7 @@ namespace PocketBase
                 } else {
                     Console.WriteLine($"Failed to authenticate: {result.StatusCode}");
                 }
-                
+
             } catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
@@ -55,7 +55,7 @@ namespace PocketBase
         }
 
     }
- internal record Identity(string identity, string password) {} 
+ internal record Identity(string identity, string password) {}
     internal record authResponse(string Token) { }
 
     internal record Token(string token, DateTime validuntil) { }
