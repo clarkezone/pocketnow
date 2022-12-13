@@ -16,19 +16,19 @@ import (
 	"github.com/spf13/viper"
 )
 
-// TestServerGrpcCmd is the command to start a test grpc server
-type TestServerGrpcCmd struct {
+// GeocacheGrpcServerCmd is the command to start a test grpc server
+type GeocacheGrpcServerCmd struct {
 	bs *basicserver.BasicServerGrpc
 }
 
-func newTestServerGrpcCmd(partent *cobra.Command) (*TestServerGrpcCmd, error) {
+func newTestServerGrpcCmd(partent *cobra.Command) (*GeocacheGrpcServerCmd, error) {
 	bsGrpc := basicserver.CreateBasicServerGrpc()
-	tsGrpc := &TestServerGrpcCmd{
+	tsGrpc := &GeocacheGrpcServerCmd{
 		bs: bsGrpc,
 	}
 	cmd := &cobra.Command{
-		Use:   "testservergrpc",
-		Short: "Starts a test grpc server to test logging and metrics",
+		Use:   "geocachegrpcserver",
+		Short: "Starts a server for caching and storing geopoints",
 		Long: `Starts a listener that will
 and usage of using your command. For example:
 
@@ -36,7 +36,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			clarkezoneLog.Successf("geocache version %v,%v started in testservergrpc mode\n",
+			clarkezoneLog.Successf("geocache version %v,%v started in geocachegrpcserver mode\n",
 				config.VersionString, config.VersionHash)
 			clarkezoneLog.Successf("Log level set to %v", internal.LogLevel)
 
@@ -56,7 +56,7 @@ to quickly create a Cobra application.`,
 	return tsGrpc, nil
 }
 
-func (ts *TestServerGrpcCmd) configFlags(cmd *cobra.Command) error {
+func (ts *GeocacheGrpcServerCmd) configFlags(cmd *cobra.Command) error {
 	m := modeValue(internal.StartupMode)
 
 	cmd.PersistentFlags().VarP(&m, "startupmode", "", "startup mode (httpserver, grpcserver, grpcclient) (default is httpserver)")

@@ -96,7 +96,7 @@ func getGeoHandler() func(w http.ResponseWriter, r *http.Request) {
 		clarkezoneLog.Debugf("Got a geocoordinate %v", dresp.Locations[0].Geometry.Coordinates[0])
 
 		if viper.GetString(internal.ServiceURLVar) != "" {
-			newFunction(w)
+			newFunction(w, &dresp)
 		} else {
 			clarkezoneLog.Debugf("Envalid ServiceURL, unable to write data %v", internal.ServiceURL)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -121,7 +121,7 @@ func getGeoHandler() func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func newFunction(w http.ResponseWriter) {
+func newFunction(w http.ResponseWriter, dresp *GeoStruct) {
 	conn, err := grpc.Dial(internal.ServiceURL, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		clarkezoneLog.Errorf("fail to dial: %v", err)
@@ -131,12 +131,22 @@ func newFunction(w http.ResponseWriter) {
 	if err == nil {
 		client := geocacheservice.NewGeoCacheServiceClient(conn)
 		locs := &geocacheservice.Locations{}
-		for i := range dresp.Locations {
-			clarkezoneLog.Debugf("Got a geocoordinate %v", i.Geometry.Coordinates[0])
-			locs.Locations = append(locs.Locations, &geocacheservice.Location{
-				Latitude: dresp.Locations[i].Geometry.Coordinates[0]})
-		}
-		_, err := client.SaveLocations(context.Background())
+		for _, loc := range dresp.Locations {
+			clarkezoneLog.Debugf("Got a geocoordinate %v", loc.Geometry.Coordinates[0])
+
+			locs.Locations = append(
+				locs.Locations,
+				&geocacheservice.Location{
+					Geometry: &geocacheservice.Geometry{
+						Coordinates: []float64{
+							loc.Geometry.Coordinates[0],
+							loc.Geometry.Coordinates[1],
+						},
+					}, // geometry
+				}, // location
+			) //append
+		} // if
+		_, err := client.SaveLocations(context.Background(), locs)
 		if err != nil {
 			clarkezoneLog.Errorf("Error %v", err)
 		} else {

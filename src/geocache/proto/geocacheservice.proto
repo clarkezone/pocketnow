@@ -9,6 +9,7 @@ message Empty {
 
 service GeoCacheService {
     rpc SaveLocations(Locations) returns (Empty){}
+    rpc GetLastLocation(Empty) returns (Location){}
 }
 
 message Locations {
