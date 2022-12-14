@@ -96,6 +96,7 @@ func getGeoHandler() func(w http.ResponseWriter, r *http.Request) {
 		clarkezoneLog.Debugf("Got a geocoordinate %v", dresp.Locations[0].Geometry.Coordinates[0])
 
 		if viper.GetString(internal.ServiceURLVar) != "" {
+			clarkezoneLog.Debugf("ServiceURL found calling grpc with %v", internal.ServiceURL)
 			newFunction(w, &dresp)
 		} else {
 			clarkezoneLog.Debugf("Envalid ServiceURL, unable to write data %v", internal.ServiceURL)
@@ -148,9 +149,9 @@ func newFunction(w http.ResponseWriter, dresp *GeoStruct) {
 		} // if
 		_, err := client.SaveLocations(context.Background(), locs)
 		if err != nil {
-			clarkezoneLog.Errorf("Error %v", err)
+			clarkezoneLog.Errorf("Call to SaveLocations failed with Error %v", err)
 		} else {
-			clarkezoneLog.Successf("Result received")
+			clarkezoneLog.Successf("Call to SaveLocations succeeded")
 		}
 	} else {
 		clarkezoneLog.Errorf("Error %v", err)
