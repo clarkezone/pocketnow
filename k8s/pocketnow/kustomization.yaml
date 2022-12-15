@@ -3,4 +3,4 @@ kind: Kustomization
 namespace: pocketnow
 resources:
   - cloudflared
-  - pocketnow
+  - pocketnowdeployment
