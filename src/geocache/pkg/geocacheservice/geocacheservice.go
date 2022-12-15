@@ -19,6 +19,7 @@ func (s *GeocacheServiceImpl) SaveLocations(ctx context.Context, in *Locations) 
 	//name := os.Getenv("MY_POD_NAME")
 	clarkezoneLog.Debugf("SaveLocations called with %v items", len(in.Locations))
 	s.last = in.Locations[len(in.Locations)-1]
+	s.last.Properties = in.Locations[len(in.Locations)-1].Properties
 	return &Empty{}, nil
 }
 
