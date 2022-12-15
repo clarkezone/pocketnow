@@ -26,9 +26,11 @@ var geoService = new GeoService();
 
 app.MapGet("/", async () =>
 {
-    var channel = GrpcChannel.ForAddress("http://localhost:8090");
+    var channel = GrpcChannel.ForAddress("http://clarkezonedevbox3-tr:8090");
     GrpcGeoCacheService.GeoCacheService.GeoCacheServiceClient wlient = new GrpcGeoCacheService.GeoCacheService.GeoCacheServiceClient(channel);
-    var last = await wlient.GetLastLocationAsync(new GrpcGeoCacheService.Empty());
+    try
+    {
+        var last = await wlient.GetLastLocationAsync(new GrpcGeoCacheService.Empty());
 
         var address = await geoService.AddressFromPoint((float)last.Geometry.Coordinates[0], (float)last.Geometry.Coordinates[1]);
         Returned r = new Returned()
@@ -38,11 +40,17 @@ app.MapGet("/", async () =>
             Country = address?.address?.CountryCode ?? "",
             MetroArea = address?.address?.MetroArea ?? "",
             Postal = address?.address?.Postal ?? "",
-            //PhoneStatus = item.batterystate,
-            //Batterylevel = item.batterylevel,
-            //TimeStamp = DateTime.Parse(item.timestamp).ToLocalTime()
+            PhoneStatus = last.Properties?.BatteryState ?? "",
+            Batterylevel = (float)(last.Properties?.BatteryLevel ?? 0.0),
+            TimeStamp = last.Properties?.Timestamp.ToDateTime() ?? DateTime.MinValue,
         };
         return Results.Json(r);
+    }
+    catch (Exception ex)
+    {
+        Debug.WriteLine(ex.Message);
+        return Results.NotFound();
+    }
 });
 
 // app.MapGet("/", async () =>
