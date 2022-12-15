@@ -21,6 +21,7 @@ import (
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 var geoweb = basicserver.CreateBasicServer()
@@ -144,6 +145,16 @@ func newFunction(w http.ResponseWriter, dresp *GeoStruct) {
 							loc.Geometry.Coordinates[1],
 						},
 					}, // geometry
+					Properties: &geocacheservice.Properties{
+						Motion:             loc.Properties.Motion,
+						Speed:              int32(loc.Properties.Speed),
+						BatteryLevel:       loc.Properties.BatteryLevel,
+						Altitude:           int32(loc.Properties.Altitude),
+						BatteryState:       loc.Properties.BatteryState,
+						HorizontalAccuracy: int32(loc.Properties.HorizontalAccuracy),
+						VerticalAccuracy:   int32(loc.Properties.VerticalAccuracy),
+						Timestamp:          timestamppb.New(loc.Properties.Timestamp),
+					}, // properties
 				}, // location
 			) //append
 		} // if
