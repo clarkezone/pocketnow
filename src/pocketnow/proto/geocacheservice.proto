@@ -1,0 +1,42 @@
+syntax = "proto3";
+package Geocacheservice;
+option go_package = "github.com/clakezone/geocache/geocacheservice";
+option csharp_namespace = "GrpcGeoCacheService";
+import "google/protobuf/timestamp.proto";
+
+message Empty {
+    string id = 1;
+}
+
+service GeoCacheService {
+    rpc SaveLocations(Locations) returns (Empty){}
+    rpc GetLastLocation(Empty) returns (Location){}
+}
+
+message Locations {
+    repeated Location locations = 1;
+  }
+  
+  message Location {
+    string type = 1;
+    Geometry geometry = 2;
+    Properties properties = 3;
+  }
+  
+  message Geometry {
+    string type = 1;
+    repeated double coordinates = 2;
+  }
+  
+  message Properties {
+    repeated string motion = 1;
+    int32 speed = 2;
+    double battery_level = 3;
+    int32 altitude = 4;
+    string battery_state = 5;
+    int32 horizontal_accuracy = 6;
+    int32 vertical_accuracy = 7;
+    google.protobuf.Timestamp timestamp = 8;
+    string wifi = 9;
+  }
+  

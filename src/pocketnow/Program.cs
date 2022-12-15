@@ -1,3 +1,4 @@
+using Grpc.Net.Client;
 using PocketBase;
 using System.Diagnostics;
 using System.Net;
@@ -17,40 +18,61 @@ Console.WriteLine($"Host: {pbhost}");
 Console.WriteLine($"Username: {un}");
 Console.WriteLine($"Password: {pw}");
 
-Authorizor a = new Authorizor(pbhost, un, pw);
-var result = await a.Authorize();
-Console.WriteLine($"Result from auth {result}");
-var client = a.GetClient();
+// Authorizor a = new Authorizor(pbhost, un, pw);
+// var result = await a.Authorize();
+// Console.WriteLine($"Result from auth {result}");
+// var client = a.GetClient();
 var geoService = new GeoService();
 
 app.MapGet("/", async () =>
 {
-    if (client == null)
-    {
-        return Results.Unauthorized();
-    }
-    var root = await client.GetRecords<currentsitrep>("currentsitrep");
-    if (root != null && root.items.Length > 0)
-    {
-        var item = root.items[0];
-        var lat = item.lat;
-        var lon = item.lon;
-        var address = await geoService.AddressFromPoint(item, lat, lon);
+    var channel = GrpcChannel.ForAddress("http://localhost:8090");
+    GrpcGeoCacheService.GeoCacheService.GeoCacheServiceClient wlient = new GrpcGeoCacheService.GeoCacheService.GeoCacheServiceClient(channel);
+    var last = await wlient.GetLastLocationAsync(new GrpcGeoCacheService.Empty());
+
+        var address = await geoService.AddressFromPoint((float)last.Geometry.Coordinates[0], (float)last.Geometry.Coordinates[1]);
         Returned r = new Returned()
         {
-            City = address?.address?.City??"",
-            Neighborhood = address?.address?.Neighborhood??"",
-            Country = address?.address?.CountryCode??"",
-            MetroArea = address?.address?.MetroArea??"",
-            Postal = address?.address?.Postal??"",
-            PhoneStatus = item.batterystate,
-            Batterylevel = item.batterylevel,
-            TimeStamp = DateTime.Parse(item.timestamp).ToLocalTime()
+            City = address?.address?.City ?? "",
+            Neighborhood = address?.address?.Neighborhood ?? "",
+            Country = address?.address?.CountryCode ?? "",
+            MetroArea = address?.address?.MetroArea ?? "",
+            Postal = address?.address?.Postal ?? "",
+            //PhoneStatus = item.batterystate,
+            //Batterylevel = item.batterylevel,
+            //TimeStamp = DateTime.Parse(item.timestamp).ToLocalTime()
         };
         return Results.Json(r);
-    }
-    return Results.NotFound();
 });
+
+// app.MapGet("/", async () =>
+// {
+//     if (client == null)
+//     {
+//         return Results.Unauthorized();
+//     }
+//     var root = await client.GetRecords<currentsitrep>("currentsitrep");
+//     if (root != null && root.items.Length > 0)
+//     {
+//         var item = root.items[0];
+//         var lat = item.lat;
+//         var lon = item.lon;
+//         var address = await geoService.AddressFromPoint(lat, lon);
+//         Returned r = new Returned()
+//         {
+//             City = address?.address?.City ?? "",
+//             Neighborhood = address?.address?.Neighborhood ?? "",
+//             Country = address?.address?.CountryCode ?? "",
+//             MetroArea = address?.address?.MetroArea ?? "",
+//             Postal = address?.address?.Postal ?? "",
+//             PhoneStatus = item.batterystate,
+//             Batterylevel = item.batterylevel,
+//             TimeStamp = DateTime.Parse(item.timestamp).ToLocalTime()
+//         };
+//         return Results.Json(r);
+//     }
+//     return Results.NotFound();
+// });
 
 app.Run();
 
@@ -62,11 +84,11 @@ internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary
 public class Returned
 {
     public string City { get; set; }
-    public string Neighborhood {get; set;}
-    public string MetroArea {get; set;}
+    public string Neighborhood { get; set; }
+    public string MetroArea { get; set; }
     public string PhoneStatus { get; set; }
-    public string Postal {get; set;}
-    public string Country {get;set;}
+    public string Postal { get; set; }
+    public string Country { get; set; }
     public float Batterylevel { get; set; }
     public DateTime TimeStamp { get; set; }
 }

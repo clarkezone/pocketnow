@@ -6,7 +6,7 @@ class GeoService
     Dictionary<(float, float), Root> cityCach = new Dictionary<(float, float), Root>();
     HttpClient http = new HttpClient();
 
-    public async Task<Root?> AddressFromPoint(Item item, float lat, float lon)
+    public async Task<Root?> AddressFromPoint(float lat, float lon)
     {
         var city = await LookupCityCache(lat, lon);
         return city;
