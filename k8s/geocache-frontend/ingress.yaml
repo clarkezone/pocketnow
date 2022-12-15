@@ -18,8 +18,8 @@ spec:
         paths:
           - backend:
               service:
-                name: pg-service
+                name: geocache-fe-service
                 port:
-                  number: 8080
+                  number: 8090
             path: /
             pathType: Prefix
