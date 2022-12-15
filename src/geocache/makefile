@@ -102,6 +102,13 @@ buildimage:
 	podman manifest add ${IMG}:${VERSION} containers-storage:localhost/${IMG}:${VERSION}.amd64
 	podman manifest add ${IMG}:${VERSION} containers-storage:localhost/${IMG}:${VERSION}.arm64
 
+.PHONY: pushimage
+pushimage:
+	$(eval IMG := "geocache")
+	$(eval VERSION := "latest")
+	podman tag ${IMG}:${VERSION} registry.dev.clarkezone.dev/${IMG}:${VERSION}
+	podman push registry.dev.clarkezone.dev/${IMG}:${VERSION}
+
 .PHONY: builddlv
 builddlv:
 	$(BUILDCOMMANDDEBUG) -o ${BINDIR}/{BIN_NAME}
