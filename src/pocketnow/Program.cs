@@ -13,10 +13,12 @@ app.UseHttpsRedirection();
 var pbhost = Environment.GetEnvironmentVariable("HOST") ?? string.Empty;
 var un = Environment.GetEnvironmentVariable("UN") ?? string.Empty;
 var pw = Environment.GetEnvironmentVariable("PW") ?? string.Empty;
+var serviceurl = Environment.GetEnvironmentVariable("SERVICEURL") ?? string.Empty;
 
 Console.WriteLine($"Host: {pbhost}");
 Console.WriteLine($"Username: {un}");
 Console.WriteLine($"Password: {pw}");
+Console.WriteLine($"SERVICEURL: {serviceurl}");
 
 // Authorizor a = new Authorizor(pbhost, un, pw);
 // var result = await a.Authorize();
@@ -26,7 +28,7 @@ var geoService = new GeoService();
 
 app.MapGet("/", async () =>
 {
-    var channel = GrpcChannel.ForAddress("http://clarkezonedevbox3-tr:8090");
+    var channel = GrpcChannel.ForAddress(serviceurl);
     GrpcGeoCacheService.GeoCacheService.GeoCacheServiceClient wlient = new GrpcGeoCacheService.GeoCacheService.GeoCacheServiceClient(channel);
     try
     {

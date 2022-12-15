@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pocketnow-frontend
+  labels:
+    app: kust
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kust
+  template:
+    metadata:
+      labels:
+        app: kust
+    spec:
+      containers:
+        - name: pocketnow-frontend
+          image: registry.dev.clarkezone.dev/pocketnow:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          env:
+            - name: SERVICEURL
+              valueFrom:
+                configMapKeyRef:
+                  name: config-fe
+                  key: SERVICEURL
