@@ -1,39 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pocketgeo
+  name: geocache-frontend
   labels:
-    app: pocketgeo-pg
+    app: kustomize
 spec:
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: pocketgeo-pg
+      app: kustomize
   template:
     metadata:
       labels:
-        app: pocketgeo-pg
+        app: kustomize
     spec:
       containers:
-        - name: pocketgeo
-          image: registry.dev.clarkezone.dev/pocketgeotemp:latest
+        - name: geocache-frontend
+          image: registry.dev.clarkezone.dev/geocache:latest
           imagePullPolicy: Always
+          args: ["geoserverweb"]
           ports:
-            - containerPort: 8080
+            - containerPort: 8090
           env:
-            - name: POCKET_SHORTEN_USERNAME
+            - name: SERVICEURL
               valueFrom:
                 configMapKeyRef:
-                  name: psconfig
-                  key: UN
-            - name: POCKET_DB_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: psconfig
-                  key: URL
-            - name: POCKET_SHORTEN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-user-pass
-                  key: PW
+                  name: config-fe
+                  key: SERVICEURL
+                    #            - name: POCKET_DB_URL
+                    #              valueFrom:
+                    #                configMapKeyRef:
+                    #                  name: config-fg
+                    #                  key: URL
+                    #            - name: POCKET_SHORTEN_PASSWORD
+                    #              valueFrom:
+                    #                secretKeyRef:
+                    #                  name: db-user-pass
+                    #                  key: PW

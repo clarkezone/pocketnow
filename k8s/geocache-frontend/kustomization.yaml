@@ -7,13 +7,14 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
-secretGenerator:
-  - name: db-user-pass
-    envs:
-      - .env.password
+    #secretGenerator:
+    #  - name: db-user-pass
+    #    envs:
+    #      - .env.password
 configMapGenerator:
-  - name: psconfig
+  - name: config-fe
     literals:
-      - UN=james@clarkezone.net
-      - URLold=https://pocket-shortner-stage.dev.clarkezone.dev/
-      - URL=http://pb-service:8080
+      - SERVICEURL=geocache-be-service:8090
+        #      - UN=james@clarkezone.net
+        #      - URLold=https://pocket-shortner-stage.dev.clarkezone.dev/
+        #      - URL=http://pb-service:8080
