@@ -1,4 +1,4 @@
-name: Build docker images
+name: Build docker images PocketNow
 
 on:
   push:
