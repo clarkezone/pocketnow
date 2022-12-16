@@ -35,7 +35,7 @@ app.MapGet("/", async () =>
         var last = await wlient.GetLastLocationAsync(new GrpcGeoCacheService.Empty());
 
         var address = await geoService.AddressFromPoint((float)last.Geometry.Coordinates[0], (float)last.Geometry.Coordinates[1]);
-        Returned r = new Returned()
+	Returned r = new Returned()
         {
             City = address?.address?.City ?? "",
             Neighborhood = address?.address?.Neighborhood ?? "",
@@ -43,6 +43,7 @@ app.MapGet("/", async () =>
             MetroArea = address?.address?.MetroArea ?? "",
             Postal = address?.address?.Postal ?? "",
             PhoneStatus = last.Properties?.BatteryState ?? "",
+            Wifi = last.Properties?.Wifi ?? "",
             Batterylevel = (float)(last.Properties?.BatteryLevel ?? 0.0),
             TimeStamp = last.Properties?.Timestamp.ToDateTime() ?? DateTime.MinValue,
         };
@@ -99,6 +100,7 @@ public class Returned
     public string PhoneStatus { get; set; }
     public string Postal { get; set; }
     public string Country { get; set; }
+    public string Wifi {get; set; }
     public float Batterylevel { get; set; }
     public DateTime TimeStamp { get; set; }
 }
