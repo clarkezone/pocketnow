@@ -25,5 +25,5 @@ spec:
             - name: SERVICEURL
               valueFrom:
                 configMapKeyRef:
-                  name: config-fe
+                  name: pocketnowconfig
                   key: SERVICEURL

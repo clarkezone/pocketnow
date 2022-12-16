@@ -13,6 +13,6 @@ secretGenerator:
 configMapGenerator:
   - name: pocketnowconfig
     literals:
-      - SERVICEURL=geocache-be-service:8090
+      - SERVICEURL=http://geocache-be-service:8090
       - UN=james@clarkezone.net
       - HOST=http://pb-service:8080
