@@ -153,6 +153,7 @@ func newFunction(w http.ResponseWriter, dresp *GeoStruct) {
 						BatteryState:       loc.Properties.BatteryState,
 						HorizontalAccuracy: int32(loc.Properties.HorizontalAccuracy),
 						VerticalAccuracy:   int32(loc.Properties.VerticalAccuracy),
+						Wifi:               loc.Properties.Wifi,
 						Timestamp:          timestamppb.New(loc.Properties.Timestamp),
 					}, // properties
 				}, // location

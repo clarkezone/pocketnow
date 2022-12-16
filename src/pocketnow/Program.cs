@@ -45,6 +45,7 @@ app.MapGet("/", async () =>
             PhoneStatus = last.Properties?.BatteryState ?? "",
             Wifi = last.Properties?.Wifi ?? "",
             Batterylevel = (float)(last.Properties?.BatteryLevel ?? 0.0),
+            BatterylevelString = (string)(last.Properties?.BatteryLevel.ToString() ?? "unknown"),
             TimeStamp = last.Properties?.Timestamp.ToDateTime() ?? DateTime.MinValue,
         };
         return Results.Json(r);
@@ -102,6 +103,7 @@ public class Returned
     public string Country { get; set; }
     public string Wifi {get; set; }
     public float Batterylevel { get; set; }
+    public string BatterylevelString { get; set; }
     public DateTime TimeStamp { get; set; }
 }
 
