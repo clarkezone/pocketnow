@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
         - name: geocache-backend
-          image: registry.dev.clarkezone.dev/geocache:latest
+          image: registry.hub.docker.com/clarkezone/geocache:v0.0.2
+            #image: registry.dev.clarkezone.dev/geocache:latest
           args: ["geocachegrpcserver"]
 
           imagePullPolicy: Always
