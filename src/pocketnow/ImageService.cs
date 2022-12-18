@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-class ImageService
+public class ImageService
 {
     const string baseurl = "https://lightroom.adobe.com/shares/f82b1d8aacc540628f3f978d99271b3e";
     HttpClient http = new HttpClient();

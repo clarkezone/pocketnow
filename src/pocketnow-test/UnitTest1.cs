@@ -1,10 +1,12 @@
 namespace pocketnow_test;
 
-public class UnitTest1
+public class TestImageService
 {
     [Fact]
-    public void Test1()
+    public async void Test1()
     {
-
+        ImageService s = new ImageService();
+        var result = await s.GetLatestImage();
+        System.Diagnostics.Debug.WriteLine(result);
     }
 }
