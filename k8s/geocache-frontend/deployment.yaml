@@ -18,7 +18,7 @@ spec:
       containers:
         - name: geocache-frontend
           # image: registry.dev.clarkezone.dev/geocache:latest
-          image: registry.hub.docker.com/clarkezone/geocache:v0.0.2
+          image: registry.hub.docker.com/clarkezone/geocache:v0.0.3
           imagePullPolicy: Always
           args: ["geoserverweb"]
           ports:
