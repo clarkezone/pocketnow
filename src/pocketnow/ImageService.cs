@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 public class ImageService
 {
@@ -13,10 +15,16 @@ public class ImageService
 
     private async Task<String?> LookupImage()
     {
-        var result = await http.GetAsync(baseurl);
-        var add = await result.Content.ReadAsStringAsync();
+	using (var driver = new ChromeDriver(".")) {
+		driver.Navigate().GoToUrl("https://lightroom.adobe.com/shares/f82b1d8aacc540628f3f978d99271b3e#");
 
-        return add;
+
+	}
+	return "ss";
+        //var result = await http.GetAsync(baseurl);
+        //var add = await result.Content.ReadAsStringAsync();
+
+        //return add;
     }
 
 }
