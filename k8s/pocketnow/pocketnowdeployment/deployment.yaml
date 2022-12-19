@@ -18,7 +18,7 @@ spec:
       containers:
         - name: pocketnow-frontend
           #image: registry.dev.clarkezone.dev/pocketnow:latest
-          image: registry.hub.docker.com/clarkezone/pocketnow:v0.0.2
+          image: registry.hub.docker.com/clarkezone/pocketnow:0.0.3
           imagePullPolicy: Always
           ports:
             - containerPort: 5000

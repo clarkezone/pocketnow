@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: geocache-backend
-          image: registry.hub.docker.com/clarkezone/geocache:v0.0.3
+          image: registry.hub.docker.com/clarkezone/geocache:0.0.3
             #image: registry.dev.clarkezone.dev/geocache:latest
           args: ["geocachegrpcserver"]
 
