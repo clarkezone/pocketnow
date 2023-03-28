@@ -16,3 +16,8 @@ Manifests
 
 Add persistence backend
 [ ] Evaluate CosmosDb - build golang test to write and read structured data
+
+# Backlog
+Update microservice starter to point to boosted-go
+Move PocketGeo onto boosted go
+Update readme with instructions
