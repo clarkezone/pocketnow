@@ -19,6 +19,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/clarkezone/boosted-go/basicserverhttp"
+	"github.com/clarkezone/boosted-go/middlewarehttp"
 	"github.com/clarkezone/geocache/internal"
 	"github.com/clarkezone/geocache/pkg/config"
 	"github.com/clarkezone/geocache/pkg/geocacheservice"
@@ -46,8 +47,8 @@ to quickly create a Cobra application.`,
 			mux.HandleFunc("/postgeo", getGeoHandler())
 
 			var wrappedmux http.Handler
-			wrappedmux = basicserverhttp.NewLoggingMiddleware(mux)
-			wrappedmux = basicserverhttp.NewPromMetricsMiddlewareHttp("geocache_geoWebservice", wrappedmux)
+			wrappedmux = middlewarehttp.NewLoggingMiddleware(mux)
+			wrappedmux = middlewarehttp.NewPromMetricsMiddlewareWeb("geocache_geoWebservice", wrappedmux)
 
 			if viper.GetString(internal.ServiceURLVar) != "" {
 				clarkezoneLog.Successf("Delegating to %v", internal.ServiceURL)

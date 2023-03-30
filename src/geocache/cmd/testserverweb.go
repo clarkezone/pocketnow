@@ -11,6 +11,7 @@ import (
 	"net/http"
 
 	"github.com/clarkezone/boosted-go/basicserverhttp"
+	"github.com/clarkezone/boosted-go/middlewarehttp"
 	"github.com/clarkezone/geocache/internal"
 	"github.com/clarkezone/geocache/pkg/config"
 	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
@@ -39,8 +40,8 @@ to quickly create a Cobra application.`,
 			mux.HandleFunc("/", getHelloHandler())
 
 			var wrappedmux http.Handler
-			wrappedmux = basicserverhttp.NewLoggingMiddleware(mux)
-			wrappedmux = basicserverhttp.NewPromMetricsMiddlewareWeb("geocache_testWebservice", wrappedmux)
+			wrappedmux = middlewarehttp.NewLoggingMiddleware(mux)
+			wrappedmux = middlewarehttp.NewPromMetricsMiddlewareWeb("geocache_testWebservice", wrappedmux)
 
 			if viper.GetString(internal.ServiceURLVar) != "" {
 				clarkezoneLog.Successf("Delegating to %v", internal.ServiceURL)
