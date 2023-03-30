@@ -8,9 +8,10 @@ import (
 
 	"github.com/sirupsen/logrus"
 
+	clarkezoneLog "github.com/clarkezone/boosted-go/log"
+
 	"github.com/clarkezone/geocache/internal"
 	"github.com/clarkezone/geocache/pkg/config"
-	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
 )
 
 // TestMain initizlie all tests
