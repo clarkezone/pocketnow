@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/clarkezone/boosted-go/basicserverhttp"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
@@ -20,7 +19,6 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/clarkezone/geocache/internal"
-	"github.com/clarkezone/geocache/pkg/basicserver"
 	"github.com/clarkezone/geocache/pkg/config"
 	"github.com/clarkezone/geocache/pkg/geocacheservice"
 	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
@@ -43,7 +41,7 @@ to quickly create a Cobra application.`,
 			clarkezoneLog.Successf("geocache version %v,%v started in geoserverweb mode\n",
 				config.VersionString, config.VersionHash)
 			clarkezoneLog.Successf("Log level set to %v", internal.LogLevel)
-			mux := basicserver.DefaultMux()
+			mux := basicserverhttp.DefaultMux()
 			mux.HandleFunc("/postgeo", getGeoHandler())
 
 			var wrappedmux http.Handler
