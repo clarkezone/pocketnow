@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/clarkezone/boosted-go/basicserverhttp"
 	"github.com/clarkezone/geocache/internal"
 	"github.com/clarkezone/geocache/pkg/config"
 	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
