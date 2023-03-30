@@ -12,19 +12,21 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/clarkezone/geocache/internal"
-	"github.com/clarkezone/geocache/pkg/basicserver"
-	"github.com/clarkezone/geocache/pkg/config"
-	"github.com/clarkezone/geocache/pkg/geocacheservice"
-	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	"github.com/clarkezone/boosted-go/basicserverhttp"
+	"github.com/clarkezone/boosted-go/middlewarehttp"
+	"github.com/clarkezone/geocache/internal"
+	"github.com/clarkezone/geocache/pkg/config"
+	"github.com/clarkezone/geocache/pkg/geocacheservice"
+	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
 )
 
-var geoweb = basicserver.CreateBasicServer()
+var geoweb = basicserverhttp.CreateBasicServer()
 
 var (
 	// testserverWebCmd represents the testserver command
@@ -41,12 +43,12 @@ to quickly create a Cobra application.`,
 			clarkezoneLog.Successf("geocache version %v,%v started in geoserverweb mode\n",
 				config.VersionString, config.VersionHash)
 			clarkezoneLog.Successf("Log level set to %v", internal.LogLevel)
-			mux := basicserver.DefaultMux()
+			mux := basicserverhttp.DefaultMux()
 			mux.HandleFunc("/postgeo", getGeoHandler())
 
 			var wrappedmux http.Handler
-			wrappedmux = basicserver.NewLoggingMiddleware(mux)
-			wrappedmux = basicserver.NewPromMetricsMiddlewareWeb("geocache_geoWebservice", wrappedmux)
+			wrappedmux = middlewarehttp.NewLoggingMiddleware(mux)
+			wrappedmux = middlewarehttp.NewPromMetricsMiddlewareWeb("geocache_geoWebservice", wrappedmux)
 
 			if viper.GetString(internal.ServiceURLVar) != "" {
 				clarkezoneLog.Successf("Delegating to %v", internal.ServiceURL)

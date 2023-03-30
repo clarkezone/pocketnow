@@ -7,22 +7,24 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 */
 
 import (
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+
+	"github.com/clarkezone/boosted-go/basicservergrpc"
+
 	"github.com/clarkezone/geocache/internal"
-	"github.com/clarkezone/geocache/pkg/basicserver"
 	"github.com/clarkezone/geocache/pkg/config"
 	"github.com/clarkezone/geocache/pkg/geocacheservice"
 	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 // GeocacheGrpcServerCmd is the command to start a test grpc server
 type GeocacheGrpcServerCmd struct {
-	bs *basicserver.BasicServerGrpc
+	bs *basicservergrpc.Grpc
 }
 
 func newTestServerGrpcCmd(partent *cobra.Command) (*GeocacheGrpcServerCmd, error) {
-	bsGrpc := basicserver.CreateBasicServerGrpc()
+	bsGrpc := basicservergrpc.CreateGrpc()
 	tsGrpc := &GeocacheGrpcServerCmd{
 		bs: bsGrpc,
 	}

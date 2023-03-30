@@ -10,15 +10,16 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/clarkezone/boosted-go/basicserverhttp"
+	"github.com/clarkezone/boosted-go/middlewarehttp"
 	"github.com/clarkezone/geocache/internal"
-	"github.com/clarkezone/geocache/pkg/basicserver"
 	"github.com/clarkezone/geocache/pkg/config"
 	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var bsweb = basicserver.CreateBasicServer()
+var bsweb = basicserverhttp.CreateBasicServer()
 
 var (
 	// testserverWebCmd represents the testserver command
@@ -35,12 +36,12 @@ to quickly create a Cobra application.`,
 			clarkezoneLog.Successf("geocache version %v,%v started in testserver mode\n",
 				config.VersionString, config.VersionHash)
 			clarkezoneLog.Successf("Log level set to %v", internal.LogLevel)
-			mux := basicserver.DefaultMux()
+			mux := basicserverhttp.DefaultMux()
 			mux.HandleFunc("/", getHelloHandler())
 
 			var wrappedmux http.Handler
-			wrappedmux = basicserver.NewLoggingMiddleware(mux)
-			wrappedmux = basicserver.NewPromMetricsMiddlewareWeb("geocache_testWebservice", wrappedmux)
+			wrappedmux = middlewarehttp.NewLoggingMiddleware(mux)
+			wrappedmux = middlewarehttp.NewPromMetricsMiddlewareWeb("geocache_testWebservice", wrappedmux)
 
 			if viper.GetString(internal.ServiceURLVar) != "" {
 				clarkezoneLog.Successf("Delegating to %v", internal.ServiceURL)
