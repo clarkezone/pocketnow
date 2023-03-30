@@ -9,10 +9,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/clarkezone/geocache/internal"
-	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
+	clarkezoneLog "github.com/clarkezone/boosted-go/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	"github.com/clarkezone/geocache/internal"
 )
 
 var (

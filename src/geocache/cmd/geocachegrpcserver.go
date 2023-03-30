@@ -12,10 +12,11 @@ import (
 
 	"github.com/clarkezone/boosted-go/basicservergrpc"
 
+	clarkezoneLog "github.com/clarkezone/boosted-go/log"
+
 	"github.com/clarkezone/geocache/internal"
 	"github.com/clarkezone/geocache/pkg/config"
 	"github.com/clarkezone/geocache/pkg/geocacheservice"
-	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
 )
 
 // GeocacheGrpcServerCmd is the command to start a test grpc server

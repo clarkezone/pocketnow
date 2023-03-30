@@ -9,14 +9,15 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 import (
 	"context"
 
-	"github.com/clarkezone/geocache/internal"
-	"github.com/clarkezone/geocache/pkg/config"
-	"github.com/clarkezone/geocache/pkg/geocacheservice"
-	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
+	clarkezoneLog "github.com/clarkezone/boosted-go/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+
+	"github.com/clarkezone/geocache/internal"
+	"github.com/clarkezone/geocache/pkg/config"
+	"github.com/clarkezone/geocache/pkg/geocacheservice"
 )
 
 // TestClientGrpcCmd is the command to start a test grpc client

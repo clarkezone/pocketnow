@@ -4,9 +4,10 @@ Copyright © 2022 clarkezone
 package main
 
 import (
-	"github.com/clarkezone/geocache/cmd"
-	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
+	clarkezoneLog "github.com/clarkezone/boosted-go/log"
 	"github.com/sirupsen/logrus"
+
+	"github.com/clarkezone/geocache/cmd"
 )
 
 func main() {

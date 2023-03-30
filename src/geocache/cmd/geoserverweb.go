@@ -19,11 +19,12 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/clarkezone/boosted-go/basicserverhttp"
+	clarkezoneLog "github.com/clarkezone/boosted-go/log"
 	"github.com/clarkezone/boosted-go/middlewarehttp"
+
 	"github.com/clarkezone/geocache/internal"
 	"github.com/clarkezone/geocache/pkg/config"
 	"github.com/clarkezone/geocache/pkg/geocacheservice"
-	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
 )
 
 var geoweb = basicserverhttp.CreateBasicServer()
