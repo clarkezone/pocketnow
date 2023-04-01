@@ -11,12 +11,13 @@ import (
 	"net/http"
 
 	"github.com/clarkezone/boosted-go/basicserverhttp"
+	clarkezoneLog "github.com/clarkezone/boosted-go/log"
 	"github.com/clarkezone/boosted-go/middlewarehttp"
-	"github.com/clarkezone/geocache/internal"
-	"github.com/clarkezone/geocache/pkg/config"
-	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	"github.com/clarkezone/geocache/internal"
+	"github.com/clarkezone/geocache/pkg/config"
 )
 
 var bsweb = basicserverhttp.CreateBasicServer()

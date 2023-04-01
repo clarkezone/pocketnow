@@ -5,7 +5,7 @@ import (
 	context "context"
 	"fmt"
 
-	clarkezoneLog "github.com/clarkezone/geocache/pkg/log"
+	clarkezoneLog "github.com/clarkezone/boosted-go/log"
 )
 
 // GeocacheServiceImpl is the server API for GreetingService service.
