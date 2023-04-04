@@ -3,14 +3,19 @@ package cosmosdbbackend
 import (
 	"log"
 	"os"
+	"reflect"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 	"github.com/sirupsen/logrus"
 
 	clarkezoneLog "github.com/clarkezone/boosted-go/log"
 
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/clarkezone/geocache/internal"
+	"github.com/clarkezone/geocache/pkg/geocacheservice"
 )
 
 // TestMain initizlie all tests
@@ -19,6 +24,48 @@ func TestMain(m *testing.M) {
 	clarkezoneLog.Init(logrus.DebugLevel)
 	code := m.Run()
 	os.Exit(code)
+}
+
+func TestGetThing(t *testing.T) {
+	testCases := []struct {
+		name     string
+		input    *geocacheservice.Location
+		expected DAOSample
+	}{
+		{
+			name: "Test 1",
+			input: &geocacheservice.Location{
+				Geometry: &geocacheservice.Geometry{
+					Type:        "Point",
+					Coordinates: []float64{37.4219999, -122.0840575},
+				},
+				Properties: &geocacheservice.Properties{
+					BatteryLevel: 75.0,
+					Altitude:     1000,
+					BatteryState: "Good",
+					Timestamp:    timestamppb.New(time.Date(2023, 4, 4, 12, 0, 0, 0, time.UTC)),
+				},
+			},
+			expected: DAOSample{
+				BatteryLevel: 75.0,
+				Altitude:     1000,
+				Lat:          37.4219999,
+				Lon:          -122.0840575,
+				BatteryState: "Good",
+				Timestamp:    "2023-04-04T12:00:00Z",
+			},
+		},
+		// Add more test cases as needed
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			result := getThing(tc.input)
+			if !reflect.DeepEqual(result, tc.expected) {
+				t.Errorf("Expected: %+v, got: %+v", tc.expected, result)
+			}
+		})
+	}
 }
 
 func Test_CosmosBootstrap(t *testing.T) {

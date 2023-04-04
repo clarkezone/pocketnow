@@ -5,14 +5,40 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
+	"github.com/clarkezone/geocache/pkg/geocacheservice"
 )
 
 var endpoint = "<azure_cosmos_uri>"
 var key = "<azure_cosmos_primary_key"
 var databasename = ""
 var containername = ""
+
+type DAOSample struct {
+	BatteryLevel float64
+	Altitude     int32
+	Lat          float64
+	Lon          float64
+	BatteryState string
+	Timestamp    string
+}
+
+func getThing(lo *geocacheservice.Location) (ds DAOSample) {
+
+	coords := lo.Geometry.Coordinates
+
+	item := DAOSample{
+		lo.Properties.BatteryLevel,
+		lo.Properties.Altitude,
+		coords[0],
+		coords[1],
+		lo.Properties.BatteryState,
+		lo.Properties.Timestamp.AsTime().Format(time.RFC3339),
+	}
+	return item
+}
 
 func auth() (*azcosmos.DatabaseClient, *azcosmos.ContainerClient) {
 

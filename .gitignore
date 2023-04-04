@@ -19,3 +19,4 @@ k8s/pocketnow/cloudflared/config/config.yaml
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+.cosmostest.env
