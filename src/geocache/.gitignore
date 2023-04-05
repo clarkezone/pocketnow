@@ -10,3 +10,5 @@ bin/*
 coverage.txt
 dist
 geocache
+
+.cosmostest.env
