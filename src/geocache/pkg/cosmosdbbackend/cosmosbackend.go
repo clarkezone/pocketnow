@@ -17,6 +17,8 @@ var databasename = ""
 var containername = ""
 
 type DAOSample struct {
+	ID           string `json:"id"`
+	PartitionID  string `json:"partitionid"`
 	BatteryLevel float64
 	Altitude     int32
 	Lat          float64
@@ -30,6 +32,8 @@ func getThing(lo *geocacheservice.Location) (ds DAOSample) {
 	coords := lo.Geometry.Coordinates
 
 	item := DAOSample{
+		"1",
+		"1",
 		lo.Properties.BatteryLevel,
 		lo.Properties.Altitude,
 		coords[0],

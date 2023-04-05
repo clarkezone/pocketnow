@@ -28,6 +28,8 @@ import (
 
 	"github.com/clarkezone/geocache/internal"
 	"github.com/clarkezone/geocache/pkg/geocacheservice"
+
+	"github.com/google/uuid"
 )
 
 // TestMain initizlie all tests
@@ -59,6 +61,8 @@ func TestGetThing(t *testing.T) {
 				},
 			},
 			expected: DAOSample{
+				ID:           "1",
+				PartitionID:  "1",
 				BatteryLevel: 75.0,
 				Altitude:     1000,
 				Lat:          37.4219999,
@@ -90,27 +94,19 @@ func Test_CosmosBootstrap(t *testing.T) {
 		log.Fatal("AZURE_COSMOS_KEY could not be found")
 	}
 
-	var databaseName = "adventureworks"
-	var containerName = "customer"
-	var partitionKey = "/customerId"
+	var databaseName = "pocketnow"
+	var containerName = "geocache"
+	var partitionKey = "/partitionid"
 
-	item := struct {
-		ID           string `json:"id"`
-		CustomerId   string `json:"customerId"`
-		Title        string
-		FirstName    string
-		LastName     string
-		EmailAddress string
-		PhoneNumber  string
-		CreationDate string
-	}{
-		ID:           "1",
-		CustomerId:   "1",
-		Title:        "Mr",
-		FirstName:    "Luke",
-		LastName:     "Hayes",
-		EmailAddress: "luke12@adventure-works.com",
-		PhoneNumber:  "879-555-0197",
+	item2 := DAOSample{
+		ID:           uuid.New().String(),
+		PartitionID:  "1",
+		BatteryLevel: 75.0,
+		Altitude:     1000,
+		Lat:          37.4219999,
+		Lon:          -122.0840575,
+		BatteryState: "Good",
+		Timestamp:    "2023-04-04T12:00:00Z",
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)
@@ -134,7 +130,7 @@ func Test_CosmosBootstrap(t *testing.T) {
 		log.Printf("createContainer failed: %s\n", err)
 	}
 
-	err = createItem(client, databaseName, containerName, item.CustomerId, item)
+	err = createItem(client, databaseName, containerName, item2.PartitionID, item2)
 	if err != nil {
 		log.Printf("createItem failed: %s\n", err)
 	}
