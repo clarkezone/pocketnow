@@ -1,3 +1,15 @@
+//go:build integration
+// +build integration
+
+// open settings json or remote settings json
+// {
+//"go.buildFlags": [
+//    "-tags=unit,integration"
+//],
+//"go.buildTags": "-tags=unit,integration",
+//"go.testTags": "-tags=unit,integration"
+// }
+
 package cosmosdbbackend
 
 import (
