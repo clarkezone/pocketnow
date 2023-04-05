@@ -11,7 +11,22 @@ import (
 // GeocacheServiceImpl is the server API for GreetingService service.
 type GeocacheServiceImpl struct {
 	UnimplementedGeoCacheServiceServer
-	last *Location
+	last       *Location
+	writeQueue *Queue
+}
+
+func NewGeoCacheServiceImpl() *GeocacheServiceImpl {
+	clarkezoneLog.Debugf("NewGeoCacheServiceImpl")
+	si := &GeocacheServiceImpl{}
+	co := &CosmosDBWriter{}
+	si.writeQueue = NewQueue(1000, co)
+	si.writeQueue.Reader()
+	return si
+}
+
+func (s *GeocacheServiceImpl) Done() {
+	clarkezoneLog.Debugf("GeocacheServiceImpl: Done called")
+	s.writeQueue.Close()
 }
 
 // GetGreeting implements GreetingServer

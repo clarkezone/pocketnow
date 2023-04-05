@@ -2,6 +2,8 @@ package geocacheservice
 
 import (
 	"sync"
+
+	clarkezoneLog "github.com/clarkezone/boosted-go/log"
 )
 
 type Message struct {
@@ -27,6 +29,7 @@ func NewQueue(size int, messageProcessor MessageProcessor) *Queue {
 }
 
 func (q *Queue) Add(item Message) {
+	clarkezoneLog.Debugf("Queue: Added item")
 	q.channel <- item
 }
 
@@ -40,6 +43,7 @@ func (q *Queue) Close() {
 }
 
 func (q *Queue) Reader() {
+	clarkezoneLog.Debugf("Queue: started reader")
 	q.wg.Add(1)
 	go func() {
 		defer q.wg.Done()

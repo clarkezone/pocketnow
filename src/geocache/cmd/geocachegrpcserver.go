@@ -46,9 +46,13 @@ to quickly create a Cobra application.`,
 			clarkezoneLog.Successf("Starting grpc server on port %v", internal.Port)
 			bsGrpc.StartMetrics()
 			clarkezoneLog.Successf("Starting metrics on port %v", internal.MetricsPort)
+			serviceImpl := geocacheservice.NewGeoCacheServiceImpl()
 			serv := bsGrpc.StartListen("")
-			geocacheservice.RegisterGeoCacheServiceServer(serv, &geocacheservice.GeocacheServiceImpl{})
-			return bsGrpc.WaitforInterupt()
+			geocacheservice.RegisterGeoCacheServiceServer(serv, serviceImpl)
+			return bsGrpc.WaitforInterupt(func() {
+				clarkezoneLog.Debugf("Closing queue reader")
+				serviceImpl.Done()
+			})
 		},
 	}
 	err := tsGrpc.configFlags(cmd)
