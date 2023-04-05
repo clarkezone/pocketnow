@@ -19,7 +19,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 	"github.com/sirupsen/logrus"
 
 	clarkezoneLog "github.com/clarkezone/boosted-go/log"
@@ -94,6 +93,11 @@ func Test_CosmosBootstrap(t *testing.T) {
 		log.Fatal("AZURE_COSMOS_KEY could not be found")
 	}
 
+	cosmosdal, err := CreateCosmosDAL(endpoint, key)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	var databaseName = "pocketnow"
 	var containerName = "geocache"
 	var partitionKey = "/partitionid"
@@ -109,28 +113,17 @@ func Test_CosmosBootstrap(t *testing.T) {
 		Timestamp:    "2023-04-04T12:00:00Z",
 	}
 
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		log.Fatal("Failed to create a credential: ", err)
-	}
-
-	// Create a CosmosDB client
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		log.Fatal("Failed to create Azure Cosmos DB db client: ", err)
-	}
-
-	err = createDatabase(client, databaseName)
+	err = cosmosdal.CreateDatabase(databaseName)
 	if err != nil {
 		log.Printf("createDatabase failed: %s\n", err)
 	}
 
-	err = createContainer(client, databaseName, containerName, partitionKey)
+	err = cosmosdal.CreateContainer(databaseName, containerName, partitionKey)
 	if err != nil {
 		log.Printf("createContainer failed: %s\n", err)
 	}
 
-	err = createItem(client, databaseName, containerName, item2.PartitionID, item2)
+	err = cosmosdal.CreateItem(databaseName, containerName, item2.PartitionID, item2)
 	if err != nil {
 		log.Printf("createItem failed: %s\n", err)
 	}
