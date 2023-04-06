@@ -7,6 +7,8 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 */
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
@@ -47,11 +49,24 @@ to quickly create a Cobra application.`,
 			clarkezoneLog.Successf("Starting grpc server on port %v", internal.Port)
 			bsGrpc.StartMetrics()
 			clarkezoneLog.Successf("Starting metrics on port %v", internal.MetricsPort)
-			co, err := cosmosdbbackend.NewCosmosDBWriter()
+			writeEnabled := viper.GetBool(internal.DbWriteEnabledVar)
+			clarkezoneLog.Successf("DB Persistence enabled %v", writeEnabled)
+
+			cosmosUrl := viper.GetString(internal.DbCosmosUrlVar)
+			cosmosKey := viper.GetString(internal.DbCosmosKeyVar)
+			if writeEnabled {
+
+				if cosmosUrl == "" || cosmosKey == "" {
+					return fmt.Errorf("Missing Url or Key %v %v", cosmosUrl, cosmosKey)
+				}
+			}
+
+			co, err := cosmosdbbackend.NewCosmosDBWriter(cosmosUrl, cosmosKey)
 			if err != nil {
 				return err
 			}
-			serviceImpl, err := geocacheservice.NewGeoCacheServiceImpl(co)
+
+			serviceImpl, err := geocacheservice.NewGeoCacheServiceImpl(co, writeEnabled)
 			if err != nil {
 				return err
 			}
@@ -80,5 +95,24 @@ func (ts *GeocacheGrpcServerCmd) configFlags(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
+
+	cmd.PersistentFlags().BoolVarP(&internal.DbWriteEnabled, internal.DbWriteEnabledVar, "", viper.GetBool(internal.DbWriteEnabledVar), "write geopoints to db")
+	err = viper.BindPFlag(internal.DbWriteEnabledVar, cmd.PersistentFlags().Lookup(internal.DbWriteEnabledVar))
+	if err != nil {
+		return err
+	}
+
+	cmd.PersistentFlags().StringVarP(&internal.DbCosmosUrl, internal.DbCosmosUrlVar, "", viper.GetString(internal.DbCosmosUrlVar), "URL for cosmosdb instance")
+	err = viper.BindPFlag(internal.DbCosmosUrlVar, cmd.PersistentFlags().Lookup(internal.DbCosmosUrlVar))
+	if err != nil {
+		return err
+	}
+
+	cmd.PersistentFlags().StringVarP(&internal.DbCosmosKey, internal.DbCosmosKeyVar, "", viper.GetString(internal.DbCosmosKeyVar), "Key for cosmosdb instance")
+	err = viper.BindPFlag(internal.DbCosmosKeyVar, cmd.PersistentFlags().Lookup(internal.DbCosmosKeyVar))
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

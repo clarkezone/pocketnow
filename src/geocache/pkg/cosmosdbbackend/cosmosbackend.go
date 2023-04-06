@@ -10,6 +10,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 	"github.com/google/uuid"
 
+	clarkezoneLog "github.com/clarkezone/boosted-go/log"
+
 	"github.com/clarkezone/geocache/pkg/geocacheservice"
 )
 
@@ -31,6 +33,7 @@ type CosmosDAL struct {
 }
 
 func CreateCosmosDAL(endpoint, key string) (*CosmosDAL, error) {
+	clarkezoneLog.Debugf("CreateCosmosDAL: endopint: %v, key: %v", endpoint, key)
 	cred, err := azcosmos.NewKeyCredential(key)
 	if err != nil {
 		return nil, err

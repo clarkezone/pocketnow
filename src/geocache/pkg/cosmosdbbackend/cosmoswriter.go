@@ -2,7 +2,6 @@ package cosmosdbbackend
 
 import (
 	"fmt"
-	"os"
 
 	clarkezoneLog "github.com/clarkezone/boosted-go/log"
 
@@ -19,14 +18,11 @@ type CosmosDBWriter struct {
 	cdal *CosmosDAL
 }
 
-func NewCosmosDBWriter() (geocacheservice.MessageProcessor, error) {
+func NewCosmosDBWriter(endpoint string, key string) (geocacheservice.MessageProcessor, error) {
 	cd := &CosmosDBWriter{}
-	// TODO replace this code with VIPER
-	endpoint := os.Getenv("AZURE_COSMOS_ENDPOINT")
 	if endpoint == "" {
 		return nil, fmt.Errorf("AZURE_COSMOS_ENDPOINT could not be found")
 	}
-	key := os.Getenv("AZURE_COSMOS_KEY")
 	if key == "" {
 		return nil, fmt.Errorf("AZURE_COSMOS_KEY could not be found")
 	}
