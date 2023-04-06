@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos v0.3.3
+	github.com/clarkezone/boosted-go v0.1.0
 	github.com/google/uuid v1.3.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cobra v1.7.0
@@ -19,7 +20,6 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
-	github.com/clarkezone/boosted-go v0.0.0-20230317133643-96730c3ae442 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.15.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
