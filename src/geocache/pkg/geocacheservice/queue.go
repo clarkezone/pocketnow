@@ -7,8 +7,9 @@ import (
 )
 
 type Message struct {
-	ID      int
-	Content string
+	ID        int
+	Content   string
+	locations *Locations
 }
 
 type MessageProcessor interface {
