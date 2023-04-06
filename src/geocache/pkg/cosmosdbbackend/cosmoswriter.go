@@ -1,4 +1,4 @@
-package geocacheservice
+package cosmosdbbackend
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 
 	clarkezoneLog "github.com/clarkezone/boosted-go/log"
 
-	"github.com/clarkezone/geocache/pkg/cosmosdbbackend"
+	"github.com/clarkezone/geocache/pkg/geocacheservice"
 )
 
 const (
@@ -16,10 +16,10 @@ const (
 )
 
 type CosmosDBWriter struct {
-	cdal *cosmosdbbackend.CosmosDAL
+	cdal *CosmosDAL
 }
 
-func NewCosmosDBWriter() (*CosmosDBWriter, error) {
+func NewCosmosDBWriter() (geocacheservice.MessageProcessor, error) {
 	cd := &CosmosDBWriter{}
 	// TODO replace this code with VIPER
 	endpoint := os.Getenv("AZURE_COSMOS_ENDPOINT")
@@ -31,14 +31,14 @@ func NewCosmosDBWriter() (*CosmosDBWriter, error) {
 		return nil, fmt.Errorf("AZURE_COSMOS_KEY could not be found")
 	}
 
-	cosmosdal, err := cosmosdbbackend.CreateCosmosDAL(endpoint, key)
+	cosmosdal, err := CreateCosmosDAL(endpoint, key)
 	cd.cdal = cosmosdal
 	return cd, err
 }
 
-func (c *CosmosDBWriter) Process(msg Message) {
-	for _, m := range msg.locations.Locations {
-		dao := cosmosdbbackend.GetThing(m)
+func (c *CosmosDBWriter) Process(msg geocacheservice.Message) {
+	for _, m := range msg.Locations.Locations {
+		dao := GetThing(m)
 		err := c.cdal.CreateItem(dbname, containername, "1", dao)
 		if err != nil {
 			clarkezoneLog.Debugf("Error writing to CosmosDB: %v", err)

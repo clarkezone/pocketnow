@@ -9,7 +9,7 @@ import (
 type Message struct {
 	ID        int
 	Content   string
-	locations *Locations
+	Locations *Locations
 }
 
 type MessageProcessor interface {

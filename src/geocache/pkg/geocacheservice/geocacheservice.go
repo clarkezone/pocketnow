@@ -15,14 +15,10 @@ type GeocacheServiceImpl struct {
 	writeQueue *Queue
 }
 
-func NewGeoCacheServiceImpl() (*GeocacheServiceImpl, error) {
+func NewGeoCacheServiceImpl(mp MessageProcessor) (*GeocacheServiceImpl, error) {
 	clarkezoneLog.Debugf("NewGeoCacheServiceImpl")
 	si := &GeocacheServiceImpl{}
-	co, err := NewCosmosDBWriter()
-	if err != nil {
-		return nil, err
-	}
-	si.writeQueue = NewQueue(1000, co)
+	si.writeQueue = NewQueue(1000, mp)
 	si.writeQueue.Reader()
 	return si, nil
 }
@@ -38,7 +34,7 @@ func (s *GeocacheServiceImpl) SaveLocations(ctx context.Context, in *Locations) 
 	//name := os.Getenv("MY_POD_NAME")
 	clarkezoneLog.Debugf("SaveLocations called with %v items", len(in.Locations))
 	message := Message{}
-	message.locations = in
+	message.Locations = in
 	s.writeQueue.Add(message)
 	s.last = in.Locations[len(in.Locations)-1]
 	return &Empty{}, nil
