@@ -16,6 +16,7 @@ import (
 
 	"github.com/clarkezone/geocache/internal"
 	"github.com/clarkezone/geocache/pkg/config"
+	"github.com/clarkezone/geocache/pkg/cosmosdbbackend"
 	"github.com/clarkezone/geocache/pkg/geocacheservice"
 )
 
@@ -46,9 +47,20 @@ to quickly create a Cobra application.`,
 			clarkezoneLog.Successf("Starting grpc server on port %v", internal.Port)
 			bsGrpc.StartMetrics()
 			clarkezoneLog.Successf("Starting metrics on port %v", internal.MetricsPort)
+			co, err := cosmosdbbackend.NewCosmosDBWriter()
+			if err != nil {
+				return err
+			}
+			serviceImpl, err := geocacheservice.NewGeoCacheServiceImpl(co)
+			if err != nil {
+				return err
+			}
 			serv := bsGrpc.StartListen("")
-			geocacheservice.RegisterGeoCacheServiceServer(serv, &geocacheservice.GeocacheServiceImpl{})
-			return bsGrpc.WaitforInterupt()
+			geocacheservice.RegisterGeoCacheServiceServer(serv, serviceImpl)
+			return bsGrpc.WaitforInterupt(func() {
+				clarkezoneLog.Debugf("Closing queue reader")
+				serviceImpl.Done()
+			})
 		},
 	}
 	err := tsGrpc.configFlags(cmd)

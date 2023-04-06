@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
+	"github.com/google/uuid"
+
 	"github.com/clarkezone/geocache/pkg/geocacheservice"
 )
 
@@ -45,12 +47,12 @@ func CreateCosmosDAL(endpoint, key string) (*CosmosDAL, error) {
 	}, nil
 }
 
-func getThing(lo *geocacheservice.Location) (ds DAOSample) {
+func GetThing(lo *geocacheservice.Location) (ds DAOSample) {
 
 	coords := lo.Geometry.Coordinates
 
 	item := DAOSample{
-		"1",
+		uuid.New().String(),
 		"1",
 		lo.Properties.BatteryLevel,
 		lo.Properties.Altitude,
