@@ -18,7 +18,8 @@ spec:
       containers:
         - name: geocache-frontend
           # image: registry.dev.clarkezone.dev/geocache:latest
-          image: registry.hub.docker.com/clarkezone/geocache:0.0.3
+          # image: registry.hub.docker.com/clarkezone/geocache:0.0.3
+          image: registry.hub.docker.com/clarkezone/geocache:cosmosflags2
           imagePullPolicy: Always
           args: ["geoserverweb"]
           ports:
@@ -29,6 +30,21 @@ spec:
                 configMapKeyRef:
                   name: config-fe
                   key: SERVICEURL
+            - name: DBWRITEENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: config-fe
+                  key: WRITEENABLED
+            - name: DBCOSMOSURL
+              valueFrom:
+                configMapKeyRef:
+                  name: config-fe
+                  key: COSMOSURL
+            - name: DBCOSMOSKEY
+              valueFrom:
+                secretKeyRef:
+                  name: cosmoskey
+                  key: COSMOSKEY
                     #            - name: POCKET_DB_URL
                     #              valueFrom:
                     #                configMapKeyRef:
