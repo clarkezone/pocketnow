@@ -47,7 +47,7 @@ to quickly create a Cobra application.`,
 			clarkezoneLog.Successf("Log level set to %v", internal.LogLevel)
 
 			clarkezoneLog.Successf("Starting grpc server on port %v", internal.Port)
-			bsGrpc.StartMetrics()
+			bsGrpc.StartMetrics(internal.MetricsPort)
 			clarkezoneLog.Successf("Starting metrics on port %v", internal.MetricsPort)
 			writeEnabled := viper.GetBool(internal.DbWriteEnabledVar)
 			clarkezoneLog.Successf("DB Persistence enabled %v", writeEnabled)
@@ -70,7 +70,7 @@ to quickly create a Cobra application.`,
 			if err != nil {
 				return err
 			}
-			serv := bsGrpc.StartListen("")
+			serv := bsGrpc.StartListen(internal.Port, "")
 			geocacheservice.RegisterGeoCacheServiceServer(serv, serviceImpl)
 			return bsGrpc.WaitforInterupt(func() {
 				clarkezoneLog.Debugf("Closing queue reader")

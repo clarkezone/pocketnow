@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos v0.3.3
-	github.com/clarkezone/boosted-go v0.1.0
+	github.com/clarkezone/boosted-go v0.1.1
 	github.com/google/uuid v1.3.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cobra v1.7.0
