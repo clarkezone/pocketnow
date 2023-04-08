@@ -2,10 +2,7 @@
 package internal
 
 import (
-	"errors"
 	"fmt"
-	"os"
-	"path"
 
 	clarkezoneLog "github.com/clarkezone/boosted-go/log"
 	"github.com/spf13/viper"
@@ -53,6 +50,15 @@ const (
 
 	// ServiceURLVar is the name of the environment variable for the service url
 	ServiceURLVar = "serviceurl"
+
+	// DBWriteEnabledVar name of var to enable db writing
+	DbWriteEnabledVar = "dbwriteenabled"
+
+	// DbCosmosUrlVar is the name of the url variable key
+	DbCosmosUrlVar = "dbcosmosurl"
+
+	// DbCosmosUrlVar is the variable name for the key to the cosmosdb
+	DbCosmosKeyVar = "dbcosmoskey"
 )
 
 var (
@@ -91,6 +97,15 @@ var (
 
 	// ServiceURL is the url of the service
 	ServiceURL string
+
+	// DbWriteEnabled new logs received should be written to db
+	DbWriteEnabled bool
+
+	// DbCosmosUrl is the url to the cosmosdb cloud instance
+	DbCosmosUrl string
+
+	// DbCosmosKey is the key to the cosmosdb cloud instance
+	DbCosmosKey string
 )
 
 func init() {
@@ -98,10 +113,10 @@ func init() {
 	viper.SetDefault(PortVar, defaultPort)
 	viper.SetDefault(MetricsPortVar, defaultMetricsPort)
 	viper.SetDefault(LogLevelVar, defaultLogLevel)
-	viper.SetDefault(KubeConfigPathVar, getDefaultKubeConfig())
 	viper.SetDefault(InitialBuildVar, true)
 	viper.SetDefault(InitialCloneVar, true)
 	viper.SetDefault(WebhookListenVar, true)
+	viper.SetDefault(DbWriteEnabledVar, false)
 
 	Port = viper.GetInt(PortVar)
 	MetricsPort = viper.GetInt(MetricsPortVar)
@@ -115,23 +130,9 @@ func init() {
 	WebhookListen = viper.GetBool(WebhookListenVar)
 	InitialBranch = viper.GetString(InitialBranchVar)
 	ServiceURL = viper.GetString(ServiceURLVar)
-}
-
-func getDefaultKubeConfig() string {
-	dirName, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
-	p := path.Join(dirName, ".kube/config")
-
-	if _, err := os.Stat(p); errors.Is(err, os.ErrNotExist) {
-		clarkezoneLog.Debugf("getdefaultKubeConfig(): default not detected")
-		return ""
-	}
-
-	clarkezoneLog.Debugf("getDefaultKubeConfig(): found default kube config:%v", p)
-	return p
+	DbWriteEnabled = viper.GetBool(DbWriteEnabledVar)
+	DbCosmosUrl = viper.GetString(DbCosmosUrlVar)
+	DbCosmosKey = viper.GetString(DbCosmosKeyVar)
 }
 
 // ValidateEnv validates environment variables
