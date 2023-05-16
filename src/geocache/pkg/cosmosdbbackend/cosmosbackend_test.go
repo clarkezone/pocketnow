@@ -39,6 +39,10 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
+func TestReadQuery(t *testing.T) {
+
+}
+
 func TestGetThing(t *testing.T) {
 	testCases := []struct {
 		name     string
