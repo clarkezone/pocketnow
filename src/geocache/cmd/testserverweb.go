@@ -51,7 +51,7 @@ to quickly create a Cobra application.`,
 			}
 
 			clarkezoneLog.Successf("Starting web server on port %v", internal.Port)
-			bsweb.StartMetrics()
+			bsweb.StartMetrics(internal.MetricsPort)
 			clarkezoneLog.Successf("Starting metrics on port %v", internal.MetricsPort)
 			bsweb.StartListen("", wrappedmux)
 			return bsweb.WaitforInterupt()

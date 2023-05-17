@@ -58,7 +58,7 @@ to quickly create a Cobra application.`,
 			}
 
 			clarkezoneLog.Successf("Starting web server on port %v", internal.Port)
-			geoweb.StartMetrics()
+			geoweb.StartMetrics(internal.Port)
 			clarkezoneLog.Successf("Starting metrics on port %v", internal.MetricsPort)
 			geoweb.StartListen("", wrappedmux)
 			return geoweb.WaitforInterupt()
