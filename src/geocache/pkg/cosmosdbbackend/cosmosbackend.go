@@ -209,3 +209,24 @@ func deleteItem(client *azcosmos.Client, databaseName, containerName, partitionK
 
 	return nil
 }
+
+func query(client *azcosmos.Client, databaseName, containerName, partitionKey, itemId string, ctx context.Context) error {
+	pk := azcosmos.NewPartitionKeyString(partitionKey)
+	containerClient, err := client.NewContainer(databaseName, containerName)
+	if err != nil {
+		return fmt.Errorf("Failed to create a container client: %s", err)
+	}
+	queryPager := containerClient.NewQueryItemsPager("select * from docs c", pk, nil)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+
+		for _, item := range queryResponse.Items {
+			var itemResponseBody map[string]interface{}
+			json.Unmarshal(item, &itemResponseBody)
+		}
+	}
+	return nil
+}
