@@ -11,15 +11,17 @@ import (
 // GeocacheServiceImpl is the server API for GreetingService service.
 type GeocacheServiceImpl struct {
 	UnimplementedGeoCacheServiceServer
-	last       *Location
-	writeQueue *Queue
+	last         *Location
+	writeQueue   *Queue
+	writeEnabled bool
 }
 
-func NewGeoCacheServiceImpl(mp MessageProcessor) (*GeocacheServiceImpl, error) {
+func NewGeoCacheServiceImpl(mp MessageProcessor, writeEnabled bool) (*GeocacheServiceImpl, error) {
 	clarkezoneLog.Debugf("NewGeoCacheServiceImpl")
 	si := &GeocacheServiceImpl{}
 	si.writeQueue = NewQueue(1000, mp)
 	si.writeQueue.Reader()
+	si.writeEnabled = writeEnabled
 	return si, nil
 }
 
@@ -33,9 +35,11 @@ func (s *GeocacheServiceImpl) Done() {
 func (s *GeocacheServiceImpl) SaveLocations(ctx context.Context, in *Locations) (*Empty, error) {
 	//name := os.Getenv("MY_POD_NAME")
 	clarkezoneLog.Debugf("SaveLocations called with %v items", len(in.Locations))
-	message := Message{}
-	message.Locations = in
-	s.writeQueue.Add(message)
+	if s.writeEnabled {
+		message := Message{}
+		message.Locations = in
+		s.writeQueue.Add(message)
+	}
 	s.last = in.Locations[len(in.Locations)-1]
 	return &Empty{}, nil
 }

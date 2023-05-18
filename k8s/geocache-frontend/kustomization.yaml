@@ -14,7 +14,9 @@ resources:
 configMapGenerator:
   - name: config-fe
     literals:
+      - WRITEENABLED=true
       - SERVICEURL=geocache-be-service:8090
+      - COSMOSURL=https://pocketnow.documents.azure.com:443/
         #      - UN=james@clarkezone.net
         #      - URLold=https://pocket-shortner-stage.dev.clarkezone.dev/
         #      - URL=http://pb-service:8080

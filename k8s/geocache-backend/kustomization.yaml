@@ -6,9 +6,15 @@ commonLabels:
 resources:
   - deployment.yaml
   - service.yaml
+secretGenerator:
+  - name: cosmoskey
+    envs:
+      - .env.cosmoskey
 configMapGenerator:
   - name: psconfig
     literals:
+      - WRITEENABLED=true
+      - COSMOSURL=https://pocketnow.documents.azure.com:443/
 #      - UN=james@clarkezone.net
 #      - URLold=https://pocket-shortner-stage.dev.clarkezone.dev/
 #      - URL=http://pb-service:8080
