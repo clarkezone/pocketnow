@@ -102,8 +102,8 @@ func Test_CosmosBootstrap(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	var databaseName = "pocketnow"
-	var containerName = "geocache"
+	var databaseName = "integrationtest"
+	var containerName = "geocacheintegrationtest"
 	var partitionKey = "/partitionid"
 
 	item2 := DAOSample{
@@ -132,6 +132,12 @@ func Test_CosmosBootstrap(t *testing.T) {
 		log.Printf("createItem failed: %s\n", err)
 	}
 
+	sql := "selec"
+	err = cosmosdal.Query(databaseName, containerName, item2.PartitionID, sql, context.Background())
+	if err != nil {
+		log.Printf("createItem failed: %s\n", err)
+	}
+
 	//	err = readItem(client, databaseName, containerName, item.CustomerId, item.ID)
 	//	if err != nil {
 	//		log.Printf("readItem failed: %s\n", err)
@@ -141,5 +147,9 @@ func Test_CosmosBootstrap(t *testing.T) {
 	//	if err != nil {
 	//		log.Printf("deleteItem failed: %s\n", err)
 	//	}
+
+}
+
+func Test_Cosmosquery(t *testing.T) {
 
 }
