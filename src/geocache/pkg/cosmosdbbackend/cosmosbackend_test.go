@@ -13,6 +13,7 @@
 package cosmosdbbackend
 
 import (
+	"context"
 	"log"
 	"os"
 	"reflect"
@@ -79,7 +80,7 @@ func TestGetThing(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			result := getThing(tc.input)
+			result := GetThing(tc.input)
 			if !reflect.DeepEqual(result, tc.expected) {
 				t.Errorf("Expected: %+v, got: %+v", tc.expected, result)
 			}
@@ -119,21 +120,24 @@ func Test_CosmosBootstrap(t *testing.T) {
 
 	err = cosmosdal.CreateDatabase(databaseName)
 	if err != nil {
-		log.Printf("createDatabase failed: %s\n", err)
+		log.Fatalf("createDatabase failed: %s\n", err)
 	}
 
 	err = cosmosdal.CreateContainer(databaseName, containerName, partitionKey)
 	if err != nil {
-		log.Printf("createContainer failed: %s\n", err)
+		log.Fatalf("createContainer failed: %s\n", err)
 	}
 
 	err = cosmosdal.CreateItem(databaseName, containerName, item2.PartitionID, item2)
 	if err != nil {
-		log.Printf("createItem failed: %s\n", err)
+		log.Fatalf("createItem failed: %s\n", err)
 	}
 
-	sql := "selec"
-	err = cosmosdal.Query(databaseName, containerName, item2.PartitionID, sql, context.Background())
+	sql := "SELECT top 10 * FROM geocacheintegrationtest p order by p.Timestamp desc"
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
+	err = cosmosdal.Query(databaseName, containerName, item2.PartitionID, sql, ctx)
+
 	if err != nil {
 		log.Printf("createItem failed: %s\n", err)
 	}
@@ -147,6 +151,37 @@ func Test_CosmosBootstrap(t *testing.T) {
 	//	if err != nil {
 	//		log.Printf("deleteItem failed: %s\n", err)
 	//	}
+
+	//TODO: delete container and database
+}
+
+func Test_CosmosQuery(t *testing.T) {
+	endpoint := os.Getenv("AZURE_COSMOS_ENDPOINT")
+	if endpoint == "" {
+		log.Fatal("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+	key := os.Getenv("AZURE_COSMOS_KEY")
+	if key == "" {
+		log.Fatal("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cosmosdal, err := CreateCosmosDAL(endpoint, key)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var databaseName = "integrationtest"
+	var containerName = "geocacheintegrationtest"
+	var partitionKey = "/partitionid"
+
+	sql := "SELECT top 10 * FROM geocacheintegrationtest p order by p.Timestamp desc"
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
+	err = cosmosdal.Query(databaseName, containerName, partitionKey, sql, ctx)
+
+	if err != nil {
+		log.Printf("createItem failed: %s\n", err)
+	}
 
 }
 
