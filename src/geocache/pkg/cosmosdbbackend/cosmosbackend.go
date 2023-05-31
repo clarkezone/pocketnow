@@ -210,23 +210,67 @@ func deleteItem(client *azcosmos.Client, databaseName, containerName, partitionK
 	return nil
 }
 
-func (dal *CosmosDAL) Query(databaseName, containerName, partitionKey, sql string, ctx context.Context) error {
+type PointStructFull struct {
+	ID            string    `json:"id"`
+	PartitionID   string    `json:"partitionid"`
+	BatteryLevel  float64   `json:"BatteryLevel"`
+	Altitude      int       `json:"Altitude"`
+	Lat           float64   `json:"Lat"`
+	Lon           float64   `json:"Lon"`
+	BatteryState  string    `json:"BatteryState"`
+	Timestamp     time.Time `json:"Timestamp"`
+	RID           string    `json:"_rid"`
+	Self          string    `json:"_self"`
+	Etag          string    `json:"_etag"`
+	Attachments   string    `json:"_attachments"`
+	TimestampUnix int       `json:"_ts"`
+}
+
+func (p PointStructFull) GetLat() float64 {
+	return p.Lat
+}
+
+func (p PointStructFull) GetLon() float64 {
+	return p.Lon
+}
+
+func (p PointStructFull) GetTimestamp() time.Time {
+	return p.Timestamp
+}
+
+// TODO return a slice of PointStruct
+// TODO write a unittest
+// TODO test to take slice of PointStruct and convert to GPX
+// TODO make it work with a supplied date range
+func (dal *CosmosDAL) Query(databaseName, containerName, partitionKey, sql string, ctx context.Context) ([]PointStructFull, error) {
 	pk := azcosmos.NewPartitionKeyString(partitionKey)
 	containerClient, err := dal.client.NewContainer(databaseName, containerName)
 	if err != nil {
-		return fmt.Errorf("failed to create a container client: %s", err)
+		return nil, fmt.Errorf("failed to create a container client: %s", err)
 	}
 	queryPager := containerClient.NewQueryItemsPager(sql, pk, nil)
+	var resturnval []PointStructFull
 	for queryPager.More() {
 		queryResponse, err := queryPager.NextPage(ctx)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
+		fmt.Printf("Query returned %d items\n", len(queryResponse.Items))
 		for _, item := range queryResponse.Items {
-			var itemResponseBody map[string]interface{}
-			json.Unmarshal(item, &itemResponseBody)
+			var point PointStructFull
+			err := json.Unmarshal(item, &point)
+			if err != nil {
+				return nil, err
+			}
+			tmp := point.Lat
+			point.Lon = point.Lat
+			point.Lat = tmp
+			resturnval = append(resturnval, point)
+			//var itemResponseBody map[string]interface{}
+			//json.Unmarshal(item, &itemResponseBody)
 		}
+
 	}
-	return nil
+	return resturnval, nil
 }

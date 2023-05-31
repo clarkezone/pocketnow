@@ -100,6 +100,11 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	_, err = newQueryServerFrontend(rootCmd)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // initConfig reads in config file and ENV variables if set.
