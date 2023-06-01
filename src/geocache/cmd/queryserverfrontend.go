@@ -115,7 +115,7 @@ to quickly create a Cobra application.`,
 				var containerName = "geocache"
 				var partitionKey = "1"
 
-				sql := "SELECT * FROM geocache c where c.Timestamp >= '2023-05-31T14:00:00Z' AND c.Timestamp <= '2023-05-31T14:55:59Z'"
+				sql := "SELECT * FROM geocache c where c.Timestamp >= '2023-05-13T14:45:59Z' AND c.Timestamp <= '2023-05-13T15:15:59Z'"
 				ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 				returned, err := cosmosdal.Query(databaseName, containerName, partitionKey, sql, ctx)
