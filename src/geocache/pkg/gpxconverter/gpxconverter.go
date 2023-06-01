@@ -3,6 +3,7 @@ package gpxconverter
 
 import (
 	"encoding/xml"
+	"io"
 	"time"
 )
 
@@ -36,7 +37,7 @@ type Trkpt struct {
 	Time time.Time `xml:"time"`
 }
 
-func ConvertToGPX(points []Point) (string, error) {
+func buildGPX(points []Point) ([]byte, error) {
 	gpx := GPX{
 		Version: "1.1",
 		Creator: "Your app name",
@@ -57,9 +58,31 @@ func ConvertToGPX(points []Point) (string, error) {
 
 	gpxXML, err := xml.MarshalIndent(gpx, "", "  ")
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	gpxXML = []byte(xml.Header + string(gpxXML))
+
+	return gpxXML, nil
+}
+
+// ConvertToGPX generates a GPX representation and returns it as a string.
+func ConvertToGPX(points []Point) (string, error) {
+	gpxXML, err := buildGPX(points)
+	if err != nil {
+		return "", err
+	}
+
 	return string(gpxXML), nil
+}
+
+// ConvertToGPXWriter generates a GPX representation and writes it to the given writer.
+func ConvertToGPXWriter(points []Point, writer io.Writer) error {
+	gpxXML, err := buildGPX(points)
+	if err != nil {
+		return err
+	}
+
+	_, err = writer.Write(gpxXML)
+	return err
 }

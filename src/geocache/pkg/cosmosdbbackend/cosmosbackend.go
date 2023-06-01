@@ -263,7 +263,7 @@ func (dal *CosmosDAL) Query(databaseName, containerName, partitionKey, sql strin
 			if err != nil {
 				return nil, err
 			}
-			tmp := point.Lat
+			tmp := point.Lon
 			point.Lon = point.Lat
 			point.Lat = tmp
 			resturnval = append(resturnval, point)

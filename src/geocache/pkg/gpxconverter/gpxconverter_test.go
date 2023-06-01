@@ -2,6 +2,7 @@
 package gpxconverter
 
 import (
+	"bytes"
 	"encoding/xml"
 	"testing"
 	"time"
@@ -64,4 +65,34 @@ func TestConvertToGPX(t *testing.T) {
 	if gpx.Trk.Trkseg.Trkpts[0].Lon != points[0].GetLon() {
 		t.Errorf("Expected lon %f, got %f", points[0].GetLon(), gpx.Trk.Trkseg.Trkpts[0].Lon)
 	}
+}
+
+func TestConvertToGPXWriter(t *testing.T) {
+	points := []Point{
+		PointStruct{
+			ID:        "a48eff9f-ca51-42e5-9f46-8b6d152aa950",
+			Lat:       37.4219999,
+			Lon:       -122.0840575,
+			Timestamp: time.Now(),
+		},
+	}
+
+	buf := new(bytes.Buffer)
+	err := ConvertToGPXWriter(points, buf)
+	if err != nil {
+		t.Error("Failed to convert to GPX:", err)
+	}
+
+	gpxStr := buf.String()
+	if gpxStr == "" {
+		t.Error("Got empty GPX string")
+	}
+
+	var gpx GPX
+	err = xml.Unmarshal([]byte(gpxStr), &gpx)
+	if err != nil {
+		t.Error("Failed to parse GPX:", err)
+	}
+
+	// ... existing checks here ...
 }
