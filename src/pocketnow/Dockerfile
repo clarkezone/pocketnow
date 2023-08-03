@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/microsoft-dotnet
-FROM mcr.microsoft.com/dotnet/sdk:8.0-preview-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0.100-preview.6-bookworm-slim AS build
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
