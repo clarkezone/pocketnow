@@ -1,8 +1,5 @@
 using Grpc.Net.Client;
-using PocketBase;
 using System.Diagnostics;
-using System.Net;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -92,18 +89,17 @@ internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
 
-public class Returned
-{
-    public string City { get; set; }
-    public string Neighborhood { get; set; }
-    public string MetroArea { get; set; }
-    public string PhoneStatus { get; set; }
-    public string Postal { get; set; }
-    public string Country { get; set; }
-    public string Wifi {get; set; }
-    public float Batterylevel { get; set; }
-    public string BatterylevelString { get; set; }
-    public DateTime TimeStamp { get; set; }
+public record Returned {
+    public string City = "";
+    public string Neighborhood = "";
+    public string MetroArea = "";
+    public string PhoneStatus = "";
+    public string Postal = "";
+    public string Country = "";
+    public string Wifi = "";
+    public float Batterylevel = 0;
+    public string BatterylevelString = "";
+    public DateTime TimeStamp = DateTime.MinValue;
 }
 
 public class AddressRec
