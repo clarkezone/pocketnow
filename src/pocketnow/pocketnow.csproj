@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 <ItemGroup>
-<Protobuf Include="proto\geocacheservice.proto" GrpcServices="Client" OutputOptions="--csharp_opt=file_extension=.g.cs" />
+<Protobuf Include="proto\geocacheservice.proto" GrpcServices="Client"  />
 <PackageReference Include="Google.Protobuf" Version="3.18.0" />
 <PackageReference Include="Grpc.Net.Client" Version="2.39.0" />
 <PackageReference Include="Grpc.Tools" Version="2.40.0">
