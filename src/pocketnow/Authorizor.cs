@@ -5,13 +5,12 @@ namespace PocketBase
 {
     public class Authorizor
     {
-        DateTime tokenValid;
         string email;
         string password;
         HttpClient client;
         Uri baseUrl;
         const string authUrl = "/api/admins/auth-with-password";
-        Token currentToken;
+        Token? currentToken;
 
         public Authorizor(string rootUrl, string email, string password)
         {
@@ -21,7 +20,7 @@ namespace PocketBase
             this.password= password;
         }
 
-        public Client GetClient()
+        public Client? GetClient()
         {
             if (currentToken != null)
             {
@@ -39,7 +38,9 @@ namespace PocketBase
                 var result = await client.PostAsJsonAsync<Identity>(authUri, new Identity(email, password));
                 if (result.IsSuccessStatusCode) {
                     var token = await result.Content.ReadFromJsonAsync<authResponse>();
+                    if (token != null) {
                     currentToken = new Token(token.Token, DateTime.Now + TimeSpan.FromHours(1));
+                    }
                     return true;
                 } else {
                     Console.WriteLine($"Failed to authenticate: {result.StatusCode}");

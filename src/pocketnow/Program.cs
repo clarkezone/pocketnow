@@ -1,8 +1,5 @@
 using Grpc.Net.Client;
-using PocketBase;
 using System.Diagnostics;
-using System.Net;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,35 +53,6 @@ app.MapGet("/", async () =>
     }
 });
 
-// app.MapGet("/", async () =>
-// {
-//     if (client == null)
-//     {
-//         return Results.Unauthorized();
-//     }
-//     var root = await client.GetRecords<currentsitrep>("currentsitrep");
-//     if (root != null && root.items.Length > 0)
-//     {
-//         var item = root.items[0];
-//         var lat = item.lat;
-//         var lon = item.lon;
-//         var address = await geoService.AddressFromPoint(lat, lon);
-//         Returned r = new Returned()
-//         {
-//             City = address?.address?.City ?? "",
-//             Neighborhood = address?.address?.Neighborhood ?? "",
-//             Country = address?.address?.CountryCode ?? "",
-//             MetroArea = address?.address?.MetroArea ?? "",
-//             Postal = address?.address?.Postal ?? "",
-//             PhoneStatus = item.batterystate,
-//             Batterylevel = item.batterylevel,
-//             TimeStamp = DateTime.Parse(item.timestamp).ToLocalTime()
-//         };
-//         return Results.Json(r);
-//     }
-//     return Results.NotFound();
-// });
-
 app.Run();
 
 internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
@@ -92,85 +60,76 @@ internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
 
-public class Returned
-{
-    public string City { get; set; }
-    public string Neighborhood { get; set; }
-    public string MetroArea { get; set; }
-    public string PhoneStatus { get; set; }
-    public string Postal { get; set; }
-    public string Country { get; set; }
-    public string Wifi {get; set; }
-    public float Batterylevel { get; set; }
-    public string BatterylevelString { get; set; }
-    public DateTime TimeStamp { get; set; }
+public record Returned {
+    public string City = "";
+    public string Neighborhood = "";
+    public string MetroArea = "";
+    public string PhoneStatus = "";
+    public string Postal = "";
+    public string Country = "";
+    public string Wifi = "";
+    public float Batterylevel = 0;
+    public string BatterylevelString = "";
+    public DateTime TimeStamp = DateTime.MinValue;
 }
 
-public class AddressRec
+public record AddressRec
 {
-    public string Match_addr { get; set; }
-    public string LongLabel { get; set; }
-    public string ShortLabel { get; set; }
-    public string Addr_type { get; set; }
-    public string Type { get; set; }
-    public string PlaceName { get; set; }
-    public string AddNum { get; set; }
-    public string Address { get; set; }
-    public string Block { get; set; }
-    public string Sector { get; set; }
-    public string Neighborhood { get; set; }
-    public string District { get; set; }
-    public string City { get; set; }
-    public string MetroArea { get; set; }
-    public string Subregion { get; set; }
-    public string Region { get; set; }
-    public string RegionAbbr { get; set; }
-    public string Territory { get; set; }
-    public string Postal { get; set; }
-    public string PostalExt { get; set; }
-    public string CntryName { get; set; }
-    public string CountryCode { get; set; }
+    public string Match_addr = "";
+    public string LongLabel = "";
+    public string ShortLabel = "";
+    public string Addr_type = "";
+    public string Type = "";
+    public string PlaceName = "";
+    public string AddNum = "";
+    public string Address = "";
+    public string Block = "";
+    public string Sector = "";
+    public string Neighborhood = "";
+    public string District = "";
+    public string City = "";
+    public string MetroArea = "";
+    public string Subregion = "";
+    public string Region = "";
+    public string RegionAbbr = "";
+    public string Territory = "";
+    public string Postal = "";
+    public string PostalExt = "";
+    public string CntryName = "";
+    public string CountryCode = "";
 }
 
-public class Location
+public record Location
 {
-    public double x { get; set; }
-    public double y { get; set; }
-    public SpatialReference spatialReference { get; set; }
+    public double x = 0;
+    public double y = 0;
+    public SpatialReference spatialReference = new SpatialReference();
 }
 
-public class Root
+public record Root
 {
-    public AddressRec address { get; set; }
-    public Location location { get; set; }
+    public AddressRec address = new AddressRec();
+    public Location location = new Location();
 }
 
-public class SpatialReference
+public record SpatialReference
 {
     public int wkid { get; set; }
     public int latestWkid { get; set; }
 }
-public class currentsitrep
-{
-    public int page { get; set; }
-    public int perPage { get; set; }
-    public int totalItems { get; set; }
-    public int totalPages { get; set; }
-    public Item[] items { get; set; }
-}
 
-public class Item
+public record Item
 {
-    public int altitude { get; set; }
-    public float batterylevel { get; set; }
-    public string batterystate { get; set; }
-    public string collectionId { get; set; }
-    public string collectionName { get; set; }
-    public string created { get; set; }
-    public string id { get; set; }
-    public float lat { get; set; }
-    public float lon { get; set; }
-    public string timestamp { get; set; }
-    public string updated { get; set; }
-    public string wifi { get; set; }
+    public int altitude = 0;
+    public float batterylevel = 0;
+    public string batterystate = "";
+    public string collectionId = "";
+    public string collectionName = "";
+    public string created = "";
+    public string id = "";
+    public float lat = 0;
+    public float lon = 0;
+    public string timestamp = "";
+    public string updated = "";
+    public string wifi = "";
 }
