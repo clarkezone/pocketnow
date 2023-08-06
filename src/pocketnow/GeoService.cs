@@ -3,6 +3,7 @@ using System.Diagnostics;
 class GeoService
 {
     const string baseurl = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode";
+    const string temp = "";
     Dictionary<(float, float), Root> cityCach = new Dictionary<(float, float), Root>();
     HttpClient http = new HttpClient();
 
