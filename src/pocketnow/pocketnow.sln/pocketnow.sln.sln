@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pocketnow.Tests", "..\pocketnow.Tests\pocketnow.Tests.csproj", "{4ABF1CE8-0284-4F56-B4A3-2063179CF4AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pocketnow", "..\pocketnow.service\pocketnow.csproj", "{27D9CB88-D1F7-4F31-BFDA-D358A3B12766}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pocketnow.lib", "..\pocketnow.lib\pocketnow.lib.csproj", "{ADDD7060-77C2-4AFC-8328-23C6CCD11E5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4ABF1CE8-0284-4F56-B4A3-2063179CF4AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ABF1CE8-0284-4F56-B4A3-2063179CF4AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ABF1CE8-0284-4F56-B4A3-2063179CF4AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ABF1CE8-0284-4F56-B4A3-2063179CF4AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27D9CB88-D1F7-4F31-BFDA-D358A3B12766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27D9CB88-D1F7-4F31-BFDA-D358A3B12766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27D9CB88-D1F7-4F31-BFDA-D358A3B12766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27D9CB88-D1F7-4F31-BFDA-D358A3B12766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADDD7060-77C2-4AFC-8328-23C6CCD11E5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADDD7060-77C2-4AFC-8328-23C6CCD11E5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADDD7060-77C2-4AFC-8328-23C6CCD11E5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADDD7060-77C2-4AFC-8328-23C6CCD11E5D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
