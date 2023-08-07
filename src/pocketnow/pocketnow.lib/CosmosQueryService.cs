@@ -1,9 +1,11 @@
 
+using Microsoft.Azure.Cosmos;
+
 namespace PocketBase
 {
     public class CosmosQueryService
     {
-        public Connect()
+        public void Connect()
         {
             using CosmosClient client = new(
                 accountEndpoint: Environment.GetEnvironmentVariable("COSMOS_ENDPOINT")!,
@@ -13,3 +15,4 @@ namespace PocketBase
 
         }
     }
+}

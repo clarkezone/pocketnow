@@ -9,6 +9,9 @@
   <PrivateAssets>all</PrivateAssets>
 </PackageReference>
 </ItemGroup>
+<ItemGroup>
+  <ProjectReference Include="..\pocketnow.lib\pocketnow.lib.csproj" />
+</ItemGroup>
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
