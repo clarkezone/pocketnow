@@ -4,7 +4,7 @@ using System.Diagnostics;
 public class UnitTest1
 {
     [Fact]
-    public void Test1()
+    public void TestCosmosEnvVars()
     {
         var cosmosendpoint = Environment.GetEnvironmentVariable("COSMOSDB_URL") ?? string.Empty;
         var cosmoskey = Environment.GetEnvironmentVariable("COSMOSDB_KEY") ?? string.Empty;
@@ -16,12 +16,12 @@ public class UnitTest1
     }
 
     [Fact]
-    public void Test2()
+    public void TestQueryGeoLog()
     {
         var cosmosendpoint = Environment.GetEnvironmentVariable("COSMOSDB_URL") ?? string.Empty;
         var cosmoskey = Environment.GetEnvironmentVariable("COSMOSDB_KEY") ?? string.Empty;
         pocketnow.CosmosQueryService cosmosQueryService = new ();
-        var thing = cosmosQueryService.Connect(cosmosendpoint, cosmoskey);
-        // cosmosQueryService.GetGeoLog(thing);
+        var container = cosmosQueryService.Connect(cosmosendpoint, cosmoskey);
+        cosmosQueryService.GetGeoLog(container);
     }
 }
