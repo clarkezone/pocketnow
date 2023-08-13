@@ -13,17 +13,15 @@ public class UnitTest1
 
         Assert.NotEmpty(cosmosendpoint);
         Assert.NotEmpty(cosmoskey);
-
-        pocketnow.CosmosQueryService cosmosQueryService = new ();
-        cosmosQueryService.Connect("",
-         "");
     }
+
     [Fact]
     public void Test2()
     {
+        var cosmosendpoint = Environment.GetEnvironmentVariable("COSMOSDB_URL") ?? string.Empty;
+        var cosmoskey = Environment.GetEnvironmentVariable("COSMOSDB_KEY") ?? string.Empty;
         pocketnow.CosmosQueryService cosmosQueryService = new ();
-        var thing = cosmosQueryService.Connect("",
-         "");
-         cosmosQueryService.GetGeoLog(thing);
+        var thing = cosmosQueryService.Connect(cosmosendpoint, cosmoskey);
+        // cosmosQueryService.GetGeoLog(thing);
     }
 }
