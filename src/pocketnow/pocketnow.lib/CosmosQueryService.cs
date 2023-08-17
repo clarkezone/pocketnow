@@ -43,13 +43,16 @@ namespace pocketnow
             public float Lat = 0;
         }
 
-        public async void GetGeoLog(Container container)
+        public async Task<IEnumerable<Product>> GetGeoLog(Container container)
         {
             var sql = "SELECT * FROM geocache c where c.Timestamp >= '2023-05-13T14:45:59Z' AND c.Timestamp <= '2023-05-13T15:15:59Z'";
             // Query multiple items from container
             using FeedIterator<Product> feed = container.GetItemQueryIterator<Product>(
                 queryText: sql
             );
+
+            List<Product> products = new();
+
             // Iterate query result pages
             while (feed.HasMoreResults)
             {
@@ -58,9 +61,10 @@ namespace pocketnow
                 // Iterate query results
                 foreach (Product item in response)
                 {
-                    Console.WriteLine($"Found item:\t{item.Lat}");
+                    products.Add(item);
                 }
             }
+            return products;
         }
 
     }
