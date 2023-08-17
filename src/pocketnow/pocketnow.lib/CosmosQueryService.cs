@@ -45,10 +45,17 @@ namespace pocketnow
 
         public async Task<IEnumerable<Product>> GetGeoLog(Container container)
         {
-            var sql = "SELECT * FROM geocache c where c.Timestamp >= '2023-05-13T14:45:59Z' AND c.Timestamp <= '2023-05-13T15:15:59Z'";
+	//TODO validate strings are valid times
+	    var startTime = "2023-05-13T14:45:59Z";
+	    var endTime = "2023-05-13T15:15:59Z";
+            var sql = "SELECT * FROM geocache c where c.Timestamp >= @starttime AND c.Timestamp <= @endtime";
+		var qd = new QueryDefinition(query: sql);
+		qd.WithParameter("@starttime", startTime);
+		qd.WithParameter("@endtime", endTime);
+
             // Query multiple items from container
             using FeedIterator<Product> feed = container.GetItemQueryIterator<Product>(
-                queryText: sql
+                queryDefinition: qd
             );
 
             List<Product> products = new();
