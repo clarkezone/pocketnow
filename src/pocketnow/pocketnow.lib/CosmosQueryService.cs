@@ -3,6 +3,32 @@ using Microsoft.Azure.Cosmos;
 
 namespace pocketnow
 {
+        public record Product
+        {
+            public string ID = "";
+            public float Lat = 0;
+        }
+
+	public interface IMyDependency
+	{
+	    public  Task<IEnumerable<Product>> GetGeoLog();
+	}
+
+	public class MyDependency : IMyDependency
+	{
+		public MyDependency(string url, string key)
+		{
+		   _queryService = new();
+                   _container = _queryService.Connect(url, key);
+		}
+		CosmosQueryService _queryService;
+		Container _container;
+		
+	    public async Task<IEnumerable<Product>> GetGeoLog() {
+		    return await _queryService.GetGeoLog(_container);
+	    }
+	}
+
     public class CosmosQueryService
     {
         public Container Connect(string Endpoint, string key)
@@ -11,7 +37,6 @@ namespace pocketnow
                 accountEndpoint: Endpoint,
                 authKeyOrResourceToken: key
             );
-            //authKeyOrResourceToken: Environment.GetEnvironmentVariable("COSMOS_KEY")!
             var databaseName = "pocketnow";
             var containerName = "geocache";
             var partitionKey = "1";
@@ -36,18 +61,14 @@ namespace pocketnow
             TimestampUnix int       `json:"_ts"`
         }
         */
-
-        public record Product
-        {
-            public string ID = "";
-            public float Lat = 0;
-        }
+//
+// TODO: Rename and populate
 
         public async Task<IEnumerable<Product>> GetGeoLog(Container container)
         {
 	//TODO validate strings are valid times
-	    var startTime = "2023-05-13T14:45:59Z";
-	    var endTime = "2023-05-13T15:15:59Z";
+	    var startTime = "2023-08-17T00:45:59Z";
+	    var endTime = "2023-08-17T13:15:59Z";
             var sql = "SELECT * FROM geocache c where c.Timestamp >= @starttime AND c.Timestamp <= @endtime";
 		var qd = new QueryDefinition(query: sql);
 		qd.WithParameter("@starttime", startTime);

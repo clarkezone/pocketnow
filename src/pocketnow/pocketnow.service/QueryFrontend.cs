@@ -1,22 +1,21 @@
 namespace pocketnow
 {
+
     public static class QueryFrontend
     {
         public static RouteGroupBuilder MapGeoQueries(this IEndpointRouteBuilder routes)
         {
             var group = routes.MapGroup("/geoquery");
-            group.MapGet("/", async (CosmosQueryService db) =>
+            group.MapGet("/", async (HttpRequest req) =>
                     {
-                        var pbhost = Environment.GetEnvironmentVariable("HOST") ?? string.Empty;
-                        var cosmosendpoint = Environment.GetEnvironmentVariable("COSMOS_URL") ?? string.Empty;
-                        var cosmoskey = Environment.GetEnvironmentVariable("COSMOS_KEY") ?? string.Empty;
-                        var serviceurl = Environment.GetEnvironmentVariable("SERVICEURL") ?? string.Empty;
-
-                        Console.WriteLine($"Username: {cosmosendpoint}");
-                        Console.WriteLine($"Password: {cosmoskey}");
-                        pocketnow.CosmosQueryService cosmosQueryService = new();
-                        var mydb = cosmosQueryService.Connect(cosmosendpoint, cosmoskey);
-                        return await cosmosQueryService.GetGeoLog(mydb);
+		    // TODO: consider caching the setup
+			Console.WriteLine($"from: {req.Query["from"]}");
+			Console.WriteLine($"to: {req.Query["to"]}");
+			// TODO validate from, to via unittest
+			// TODO: get CosmosQueryService from services
+//                        pocketnow.CosmosQueryService cosmosQueryService = new();
+//                        var mydb = cosmosQueryService.Connect(cosmosendpoint, cosmoskey);
+//                        return await cosmosQueryService.GetGeoLog(mydb);
                     });
             return group;
         }
