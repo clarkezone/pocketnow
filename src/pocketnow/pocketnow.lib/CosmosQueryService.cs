@@ -1,11 +1,12 @@
+using System.Security.Cryptography;
 using Microsoft.Azure.Cosmos;
 
 namespace pocketnow
 {
-    public record Product
+    public class Product
     {
-        public string ID = "";
-        public float Lat = 0;
+        public string ID { get; set; }
+        public float Lat { get; set; }
     }
 
     public interface IMyDependency
@@ -109,7 +110,6 @@ namespace pocketnow
                 // Iterate query results
                 foreach (Product item in response)
                 {
-                    Console.WriteLine(item.Lat);
                     products.Add(item);
                 }
             }
