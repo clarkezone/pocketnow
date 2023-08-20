@@ -1,33 +1,53 @@
-
 using Microsoft.Azure.Cosmos;
 
 namespace pocketnow
 {
-        public record Product
+    public record Product
+    {
+        public string ID = "";
+        public float Lat = 0;
+    }
+
+    public interface IMyDependency
+    {
+        public Task<IEnumerable<Product>> GetGeoLog();
+    }
+
+    public class MyDependency : IMyDependency
+    {
+        public MyDependency(string url, string key)
         {
-            public string ID = "";
-            public float Lat = 0;
+            CosmosUrl = url;
+            CosmosKey = key;
+            _queryService = new();
         }
 
-	public interface IMyDependency
-	{
-	    public  Task<IEnumerable<Product>> GetGeoLog();
-	}
+        public string CosmosUrl { get; set; }
+        public string CosmosKey { get; set; }
 
-	public class MyDependency : IMyDependency
-	{
-		public MyDependency(string url, string key)
-		{
-		   _queryService = new();
-                   _container = _queryService.Connect(url, key);
-		}
-		CosmosQueryService _queryService;
-		Container _container;
-		
-	    public async Task<IEnumerable<Product>> GetGeoLog() {
-		    return await _queryService.GetGeoLog(_container);
-	    }
-	}
+        CosmosQueryService _queryService;
+        Container? _container;
+
+        public async Task<IEnumerable<Product>> GetGeoLog()
+        {
+            _container = _queryService.Connect(CosmosUrl, CosmosKey);
+            return await _queryService.GetGeoLog(_container);
+        }
+    }
+
+    /*
+	public static class MyConfigServiceCollectionExtensions
+    {
+
+        public static IServiceCollection AddMyDependencyGroup(
+             this IServiceCollection services, string url, string key)
+        {
+            services.AddScoped<MyDependency>();
+
+            return services;
+        }
+    }
+    */
 
     public class CosmosQueryService
     {
@@ -61,18 +81,18 @@ namespace pocketnow
             TimestampUnix int       `json:"_ts"`
         }
         */
-//
-// TODO: Rename and populate
+        //
+        // TODO: Rename and populate
 
         public async Task<IEnumerable<Product>> GetGeoLog(Container container)
         {
-	//TODO validate strings are valid times
-	    var startTime = "2023-08-17T00:45:59Z";
-	    var endTime = "2023-08-17T13:15:59Z";
+            //TODO validate strings are valid times
+            var startTime = "2023-08-17T00:45:59Z";
+            var endTime = "2023-08-17T13:15:59Z";
             var sql = "SELECT * FROM geocache c where c.Timestamp >= @starttime AND c.Timestamp <= @endtime";
-		var qd = new QueryDefinition(query: sql);
-		qd.WithParameter("@starttime", startTime);
-		qd.WithParameter("@endtime", endTime);
+            var qd = new QueryDefinition(query: sql);
+            qd.WithParameter("@starttime", startTime);
+            qd.WithParameter("@endtime", endTime);
 
             // Query multiple items from container
             using FeedIterator<Product> feed = container.GetItemQueryIterator<Product>(
@@ -89,6 +109,7 @@ namespace pocketnow
                 // Iterate query results
                 foreach (Product item in response)
                 {
+                    Console.WriteLine(item.Lat);
                     products.Add(item);
                 }
             }

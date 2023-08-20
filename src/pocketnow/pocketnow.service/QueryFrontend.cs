@@ -6,16 +6,13 @@ namespace pocketnow
         public static RouteGroupBuilder MapGeoQueries(this IEndpointRouteBuilder routes)
         {
             var group = routes.MapGroup("/geoquery");
-            group.MapGet("/", async (HttpRequest req) =>
+            group.MapGet("/", async (HttpRequest req, MyDependency dep) =>
                     {
-		    // TODO: consider caching the setup
-			Console.WriteLine($"from: {req.Query["from"]}");
-			Console.WriteLine($"to: {req.Query["to"]}");
-			// TODO validate from, to via unittest
-			// TODO: get CosmosQueryService from services
-//                        pocketnow.CosmosQueryService cosmosQueryService = new();
-//                        var mydb = cosmosQueryService.Connect(cosmosendpoint, cosmoskey);
-//                        return await cosmosQueryService.GetGeoLog(mydb);
+                        // TODO: consider caching the setup
+                        Console.WriteLine($"from: {req.Query["from"]}");
+                        Console.WriteLine($"to: {req.Query["to"]}");
+                        Console.WriteLine("Dependency is null=" + dep == null);
+                        return Results.Json(await dep.GetGeoLog());
                     });
             return group;
         }
