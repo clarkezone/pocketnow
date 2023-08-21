@@ -1,7 +1,7 @@
 namespace pocketnow.Tests;
 using System.Diagnostics;
 
-public class QueryServiceIntegrationTest
+public class GeoServiceTest
 {
     [Fact]
     public void TestCosmosEnvVars()
