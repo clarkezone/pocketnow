@@ -17,3 +17,5 @@ var app = builder.Build();
 app.MapGeoQueries();
 
 app.Run();
+
+public partial class Program { }
