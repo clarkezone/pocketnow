@@ -9,9 +9,9 @@ public class QueryFrontendTests
 	    await using var application = new GeoServiceApplication();
 	    using var client = application.CreateClient();
 
-		var start = DateTime.Now;
+		var start = DateTime.UtcNow;
 
-		var pa = new GeoQueryParams() {QueryStart = start};
+		var pa = new GeoQueryParams() {QueryStart = start, QueryEnd = start};
 
 	    var response = await client.PostAsJsonAsync("/geoquery", pa);
 	  

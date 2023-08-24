@@ -38,11 +38,13 @@ namespace pocketnow
         //
         // TODO: Rename and populate
 
-        public async Task<IEnumerable<GeoLogEntry>> GetGeoLog(Container container)
+        public async Task<IEnumerable<GeoLogEntry>> GetGeoLog(Container container, DateTime start, DateTime end)
         {
             //TODO validate strings are valid times
-            var startTime = "2023-08-17T00:45:59Z";
-            var endTime = "2023-08-17T13:15:59Z";
+//            var startTime = "2023-08-17T00:45:59Z";
+//            var endTime = "2023-08-17T13:15:59Z";
+            var startTime = string.Format("{0:yyyy-MM-ddTHH:mm:ss.FFFZ}", start);
+            var endTime = string.Format("{0:yyyy-MM-ddTHH:mm:ss.FFFZ}", end);
             var sql = "SELECT * FROM geocache c where c.Timestamp >= @starttime AND c.Timestamp <= @endtime";
             var qd = new QueryDefinition(query: sql);
             qd.WithParameter("@starttime", startTime);

@@ -1,3 +1,4 @@
+using System.Data;
 using System.Security.Cryptography;
 using Microsoft.Azure.Cosmos;
 
@@ -11,7 +12,7 @@ namespace pocketnow
 
     public interface IGeoQueryService
     {
-        public Task<IEnumerable<GeoLogEntry>> GetGeoLog();
+        public Task<IEnumerable<GeoLogEntry>> GetGeoLog(DateTime start, DateTime end);
     }
 
     public class GeoQueryService : IGeoQueryService
@@ -29,10 +30,10 @@ namespace pocketnow
         CosmosQueryService _queryService;
         Container? _container;
 
-        public async Task<IEnumerable<GeoLogEntry>> GetGeoLog()
+        public async Task<IEnumerable<GeoLogEntry>> GetGeoLog(DateTime start, DateTime end)
         {
             _container = _queryService.Connect(CosmosUrl, CosmosKey);
-            return await _queryService.GetGeoLog(_container);
+            return await _queryService.GetGeoLog(_container, start, end);
         }
     }
 }

@@ -2,7 +2,7 @@ namespace pocketnow.Tests;
 
 
 class TestGeoQueryService : IGeoQueryService {
-   public async Task<IEnumerable<GeoLogEntry>> GetGeoLog() {
+   public async Task<IEnumerable<GeoLogEntry>> GetGeoLog(DateTime start, DateTime end) {
     return new List<GeoLogEntry> {};
    }
 }
