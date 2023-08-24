@@ -1,12 +1,12 @@
 namespace pocketnow
 {
 
-    public static class QueryFrontend
+    public static class GeoQueryFrontend
     {
         public static RouteGroupBuilder MapGeoQueries(this IEndpointRouteBuilder routes)
         {
             var group = routes.MapGroup("/geoquery");
-            group.MapGet("/", async (HttpRequest req, MyDependency dep) =>
+            group.MapGet("/", async (HttpRequest req, IGeoQueryService dep) =>
                     {
                         // TODO: consider caching the setup
                         Console.WriteLine($"from: {req.Query["from"]}");

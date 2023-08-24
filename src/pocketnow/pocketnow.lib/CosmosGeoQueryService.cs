@@ -3,53 +3,6 @@ using Microsoft.Azure.Cosmos;
 
 namespace pocketnow
 {
-    public class Product
-    {
-        public string ID { get; set; }
-        public float Lat { get; set; }
-    }
-
-    public interface IMyDependency
-    {
-        public Task<IEnumerable<Product>> GetGeoLog();
-    }
-
-    public class MyDependency : IMyDependency
-    {
-        public MyDependency(string url, string key)
-        {
-            CosmosUrl = url;
-            CosmosKey = key;
-            _queryService = new();
-        }
-
-        public string CosmosUrl { get; set; }
-        public string CosmosKey { get; set; }
-
-        CosmosQueryService _queryService;
-        Container? _container;
-
-        public async Task<IEnumerable<Product>> GetGeoLog()
-        {
-            _container = _queryService.Connect(CosmosUrl, CosmosKey);
-            return await _queryService.GetGeoLog(_container);
-        }
-    }
-
-    /*
-	public static class MyConfigServiceCollectionExtensions
-    {
-
-        public static IServiceCollection AddMyDependencyGroup(
-             this IServiceCollection services, string url, string key)
-        {
-            services.AddScoped<MyDependency>();
-
-            return services;
-        }
-    }
-    */
-
     public class CosmosQueryService
     {
         public Container Connect(string Endpoint, string key)
@@ -85,7 +38,7 @@ namespace pocketnow
         //
         // TODO: Rename and populate
 
-        public async Task<IEnumerable<Product>> GetGeoLog(Container container)
+        public async Task<IEnumerable<GeoLogEntry>> GetGeoLog(Container container)
         {
             //TODO validate strings are valid times
             var startTime = "2023-08-17T00:45:59Z";
@@ -96,24 +49,24 @@ namespace pocketnow
             qd.WithParameter("@endtime", endTime);
 
             // Query multiple items from container
-            using FeedIterator<Product> feed = container.GetItemQueryIterator<Product>(
+            using FeedIterator<GeoLogEntry> feed = container.GetItemQueryIterator<GeoLogEntry>(
                 queryDefinition: qd
             );
 
-            List<Product> products = new();
+            List<GeoLogEntry> logEntries = new();
 
             // Iterate query result pages
             while (feed.HasMoreResults)
             {
-                FeedResponse<Product> response = await feed.ReadNextAsync();
+                FeedResponse<GeoLogEntry> response = await feed.ReadNextAsync();
 
                 // Iterate query results
-                foreach (Product item in response)
+                foreach (GeoLogEntry item in response)
                 {
-                    products.Add(item);
+                    logEntries.Add(item);
                 }
             }
-            return products;
+            return logEntries;
         }
 
     }

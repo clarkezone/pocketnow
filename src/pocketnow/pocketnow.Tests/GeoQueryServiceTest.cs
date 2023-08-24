@@ -1,9 +1,9 @@
 namespace pocketnow.Tests;
 using System.Diagnostics;
 
-public class QueryServiceIntegrationTest
+public class GeoServiceTest
 {
-    [Fact]
+    [Fact (Skip = "Integration")]
     public void TestCosmosEnvVars()
     {
         var cosmosendpoint = Environment.GetEnvironmentVariable("COSMOSDB_URL") ?? string.Empty;
@@ -15,7 +15,7 @@ public class QueryServiceIntegrationTest
         Assert.NotEmpty(cosmoskey);
     }
 
-    [Fact]
+    [Fact (Skip = "Integration")]
     public async Task TestQueryGeoLog()
     {
         var cosmosendpoint = Environment.GetEnvironmentVariable("COSMOSDB_URL") ?? string.Empty;
