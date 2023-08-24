@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 public class GeoServiceTest
 {
-    [Fact]
+    [Fact (Skip = "Integration")]
     public void TestCosmosEnvVars()
     {
         var cosmosendpoint = Environment.GetEnvironmentVariable("COSMOSDB_URL") ?? string.Empty;
@@ -15,7 +15,7 @@ public class GeoServiceTest
         Assert.NotEmpty(cosmoskey);
     }
 
-    [Fact]
+    [Fact (Skip = "Integration")]
     public async Task TestQueryGeoLog()
     {
         var cosmosendpoint = Environment.GetEnvironmentVariable("COSMOSDB_URL") ?? string.Empty;

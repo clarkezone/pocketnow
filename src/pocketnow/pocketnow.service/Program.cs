@@ -12,7 +12,7 @@ var serviceurl = Environment.GetEnvironmentVariable("SERVICEURL") ?? string.Empt
 Console.WriteLine($"COSMOSDB_URL: {cosmosendpoint}");
 Console.WriteLine($"COSMOSDB_KEY: {cosmoskey}");
 builder.Services.AddControllers();
-builder.Services.AddScoped<MyDependency>(x => new MyDependency(cosmosendpoint, cosmoskey));
+builder.Services.AddScoped<IGeoQueryService, GeoQueryService>(x => new GeoQueryService(cosmosendpoint, cosmoskey));
 var app = builder.Build();
 app.MapGeoQueries();
 
