@@ -9,13 +9,13 @@ namespace pocketnow
         {
 
             var group = routes.MapGroup("/oldfrontend");
-            group.MapGet("/", async (CosmosQueryService db) =>
+            group.MapGet("/", async () =>
                 {
 
-                    var pbhost = Environment.GetEnvironmentVariable("HOST") ?? string.Empty;
-                    var un = Environment.GetEnvironmentVariable("UN") ?? string.Empty;
-                    var pw = Environment.GetEnvironmentVariable("PW") ?? string.Empty;
-                    var serviceurl = Environment.GetEnvironmentVariable("SERVICEURL") ?? string.Empty;
+                    var pbhost = Environment.GetEnvironmentVariable("GEO_CACHE_HOST") ?? string.Empty;
+                    var un = Environment.GetEnvironmentVariable("GEO_CACHE_UN") ?? string.Empty;
+                    var pw = Environment.GetEnvironmentVariable("GEO_CACHE_PW") ?? string.Empty;
+                    var serviceurl = Environment.GetEnvironmentVariable("GEO_CACHE_SERVICEURL") ?? string.Empty;
                     Console.WriteLine($"Host: {pbhost}");
                     Console.WriteLine($"Username: {un}");
                     Console.WriteLine($"Password: {pw}");

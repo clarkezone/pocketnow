@@ -15,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IGeoQueryService, GeoQueryService>(x => new GeoQueryService(cosmosendpoint, cosmoskey));
 var app = builder.Build();
 app.MapGeoQueries();
+app.MapGeoGeoService(); //old frontend
 
 app.Run();
 
