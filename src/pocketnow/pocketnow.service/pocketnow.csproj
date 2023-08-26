@@ -18,5 +18,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-  </PropertyGroup>
+    </PropertyGroup>
+    <PropertyGroup>
+    <PublishAot>false</PublishAot>
+</PropertyGroup>
 </Project>
