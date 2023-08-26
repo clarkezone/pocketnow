@@ -4,10 +4,34 @@ using Microsoft.Azure.Cosmos;
 
 namespace pocketnow
 {
+        /*
+        type PointStructFull struct {
+            ID            string    `json:"id"`
+            PartitionID   string    `json:"partitionid"`
+            BatteryLevel  float64   `json:"BatteryLevel"`
+            Altitude      int       `json:"Altitude"`
+            Lat           float64   `json:"Lat"`
+            Lon           float64   `json:"Lon"`
+            BatteryState  string    `json:"BatteryState"`
+            Timestamp     time.Time `json:"Timestamp"`
+            RID           string    `json:"_rid"`
+            Self          string    `json:"_self"`
+            Etag          string    `json:"_etag"`
+            Attachments   string    `json:"_attachments"`
+            TimestampUnix int       `json:"_ts"`
+        }
+        */
+        //
+        // TODO: Rename and populate
+
     public class GeoLogEntry
     {
         public string ID { get; set; }
         public float Lat { get; set; }
+        public float Lon { get; set; }
+        public string BatteryState { get; set; }
+        public int Altitude { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 
     public interface IGeoQueryService
