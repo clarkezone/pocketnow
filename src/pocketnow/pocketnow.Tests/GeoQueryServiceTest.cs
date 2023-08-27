@@ -15,8 +15,7 @@ public class GeoServiceTest
         Assert.NotEmpty(cosmoskey);
     }
 
-    // [Fact (Skip = "Integration")]
-    [Fact ]
+    [Fact (Skip = "Integration")]
     public async Task TestQueryGeoLog()
     {
         var cosmosendpoint = Environment.GetEnvironmentVariable("COSMOSDB_URL") ?? string.Empty;

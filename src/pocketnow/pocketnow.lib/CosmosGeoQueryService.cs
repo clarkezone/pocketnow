@@ -18,31 +18,12 @@ namespace pocketnow
             return db.GetContainer(containerName);
         }
 
-        /*
-        type PointStructFull struct {
-            ID            string    `json:"id"`
-            PartitionID   string    `json:"partitionid"`
-            BatteryLevel  float64   `json:"BatteryLevel"`
-            Altitude      int       `json:"Altitude"`
-            Lat           float64   `json:"Lat"`
-            Lon           float64   `json:"Lon"`
-            BatteryState  string    `json:"BatteryState"`
-            Timestamp     time.Time `json:"Timestamp"`
-            RID           string    `json:"_rid"`
-            Self          string    `json:"_self"`
-            Etag          string    `json:"_etag"`
-            Attachments   string    `json:"_attachments"`
-            TimestampUnix int       `json:"_ts"`
-        }
-        */
-        //
-        // TODO: Rename and populate
-
         public async Task<IEnumerable<GeoLogEntry>> GetGeoLog(Container container, DateTime start, DateTime end)
         {
             //TODO validate strings are valid times
 //            var startTime = "2023-08-17T00:45:59Z";
 //            var endTime = "2023-08-17T13:15:59Z";
+            //ISO 8601 UTC
             var startTime = string.Format("{0:yyyy-MM-ddTHH:mm:ss.FFFZ}", start);
             var endTime = string.Format("{0:yyyy-MM-ddTHH:mm:ss.FFFZ}", end);
             var sql = "SELECT * FROM geocache c where c.Timestamp >= @starttime AND c.Timestamp <= @endtime";
@@ -65,6 +46,9 @@ namespace pocketnow
                 // Iterate query results
                 foreach (GeoLogEntry item in response)
                 {
+                    var tmp = item.Lat;
+                    item.Lat = item.Lon;
+                    item.Lon = tmp;
                     logEntries.Add(item);
                 }
             }

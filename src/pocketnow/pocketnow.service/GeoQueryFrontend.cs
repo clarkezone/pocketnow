@@ -1,8 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+using MiniValidation;
+
 namespace pocketnow
 {
 
     public class GeoQueryParams {
+	[Required, DataType(DataType.DateTime)]
         public DateTime QueryStart { get; set; }
+
+	[Required, DataType(DataType.DateTime)]
         public DateTime QueryEnd { get; set; }
     }
 
@@ -13,7 +19,11 @@ namespace pocketnow
             var group = routes.MapGroup("/geoquery");
             group.MapPost("/", async (GeoQueryParams pa, IGeoQueryService dep) =>
                     {
-                        // TODO: consider caching the setup
+		    	if (!MiniValidator.TryValidate(pa, out var errors))
+				{
+			return Results.ValidationProblem(errors);
+			}
+
                         Console.WriteLine(string.Format("{0:yyyy-MM-ddTHH:mm:ss.FFFZ}", pa.QueryStart));
                         Console.WriteLine(string.Format("{0:yyyy-MM-ddTHH:mm:ss.FFFZ}", pa.QueryEnd));
 //                        Console.WriteLine($"to: {req.Query["to"]}");
