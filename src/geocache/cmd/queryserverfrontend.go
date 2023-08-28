@@ -97,13 +97,13 @@ to quickly create a Cobra application.`,
 					html.EscapeString(firstLabel(who.Node.ComputedName)),
 					r.RemoteAddr)
 
-				endpoint := os.Getenv("AZURE_COSMOS_ENDPOINT")
+				endpoint := os.Getenv("COSMOSDB_URL")
 				if endpoint == "" {
-					log.Fatal("AZURE_COSMOS_ENDPOINT could not be found")
+					log.Fatal("COSMOSDB_ENDPOINT could not be found")
 				}
-				key := os.Getenv("AZURE_COSMOS_KEY")
+				key := os.Getenv("COSMOSDB_KEY")
 				if key == "" {
-					log.Fatal("AZURE_COSMOS_KEY could not be found")
+					log.Fatal("COSMOSDB_KEY could not be found")
 				}
 
 				cosmosdal, err := cosmosdbbackend.CreateCosmosDAL(endpoint, key)

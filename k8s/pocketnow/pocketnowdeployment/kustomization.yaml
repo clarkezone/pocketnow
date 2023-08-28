@@ -7,9 +7,9 @@ resources:
   - deployment.yaml
   - service.yaml
 secretGenerator:
-  - name: db-user-pass
+  - name: pocketnowcosmossecrets
     envs:
-      - .env.password
+      - .cosmosdbsecrets.env
 configMapGenerator:
   - name: pocketnowconfig
     literals:
