@@ -11,7 +11,7 @@ secretGenerator:
       - tunnelsecrets/cert.pem
   - name: cloudflare-blog-creds
     files:
-      - tunnelsecrets/395f1f03-b92c-4750-8de8-547ac715a4a7.json
+      - tunnelsecrets/TUNNEL_ID.json
 configMapGenerator:
   - name: cloudflare-blog-configs
     files:
