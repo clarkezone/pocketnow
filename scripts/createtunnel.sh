@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -e # report errors
 tunnelname="$1"
 domain="$2"
 target="$3"
