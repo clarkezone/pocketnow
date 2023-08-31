@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: pocketnow
+commonLabels:
+  app: pocketnow-geoquery
+resources:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+secretGenerator:
+  - name: pocketnowcosmossecrets
+    envs:
+      - .cosmosdbsecrets.env
+configMapGenerator:
+  - name: pocketnowconfig
+    literals:
+      - SERVICEURL=http://geocache-be-service:8090
+      - UN=james@clarkezone.net
+      - HOST=http://pb-service:8080

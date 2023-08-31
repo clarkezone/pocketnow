@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pocketnow-frontend
+  labels:
+    app: kust
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kust
+  template:
+    metadata:
+      labels:
+        app: kust
+    spec:
+      containers:
+        - name: pocketnow-frontend
+          #image: registry.dev.clarkezone.dev/pocketnow:latest
+          #image: registry.hub.docker.com/clarkezone/pocketnow:0.0.3
+          image: registry.hub.docker.com/clarkezone/pocketnow:dotnet8-manual-arm64
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          env:
+            - name: SERVICEURL
+              valueFrom:
+                configMapKeyRef:
+                  name: pocketnowconfig
+                  key: SERVICEURL
+            - name: COSMOSDB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: pocketnowcosmossecrets
+                  key: COSMOSDB_URL
+            - name: COSMOSDB_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: pocketnowcosmossecrets
+                  key: COSMOSDB_KEY
