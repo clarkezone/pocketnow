@@ -7,18 +7,10 @@ namespace pocketnow
     {
         public static RouteGroupBuilder MapGeoGeoService(this IEndpointRouteBuilder routes)
         {
-
-            var group = routes.MapGroup("/oldfrontend");
+            var group = routes.MapGroup("/");
             group.MapGet("/", async () =>
                 {
-
-                    var pbhost = Environment.GetEnvironmentVariable("GEO_CACHE_HOST") ?? string.Empty;
-                    var un = Environment.GetEnvironmentVariable("GEO_CACHE_UN") ?? string.Empty;
-                    var pw = Environment.GetEnvironmentVariable("GEO_CACHE_PW") ?? string.Empty;
                     var serviceurl = Environment.GetEnvironmentVariable("GEO_CACHE_SERVICEURL") ?? string.Empty;
-                    Console.WriteLine($"Host: {pbhost}");
-                    Console.WriteLine($"Username: {un}");
-                    Console.WriteLine($"Password: {pw}");
                     Console.WriteLine($"SERVICEURL: {serviceurl}");
 
                     var geoService = new GeoService();

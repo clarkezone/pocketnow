@@ -29,13 +29,8 @@ spec:
                 configMapKeyRef:
                   name: pocketnowconfig
                   key: SERVICEURL
-            - name: COSMOSDB_URL
+            - name: NOWMODE
               valueFrom:
-                secretKeyRef:
-                  name: pocketnowcosmossecrets
-                  key: COSMOSDB_URL
-            - name: COSMOSDB_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: pocketnowcosmossecrets
-                  key: COSMOSDB_KEY
+                configMapKeyRef:
+                  name: pocketnowconfig
+                  key: NOWMODE
