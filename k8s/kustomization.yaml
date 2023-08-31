@@ -6,4 +6,4 @@ resources:
   - geocache-frontend
   - geocache-backend
   - geoquery
-    #  - pocketnow
+  - pocketnow

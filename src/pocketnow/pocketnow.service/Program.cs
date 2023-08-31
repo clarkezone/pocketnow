@@ -20,11 +20,11 @@ if (string.IsNullOrEmpty(pocketnowmode) ||  pocketnowmode=="FALSE") {
 
 var app = builder.Build();
 if (string.IsNullOrEmpty(pocketnowmode) ||  pocketnowmode=="FALSE") {
-	Console.WriteLine($"Starting PocketNow mode");
-	app.MapGeoGeoService(); //old frontend
-} else {
 	Console.WriteLine($"Starting GeoQuery mode");
 	app.MapGeoQueries();
+} else if (pocketnowmode=="TRUE") {
+	Console.WriteLine($"Starting PocketNow mode");
+	app.MapGeoGeoService(); //old frontend
 }
 
 app.Run();
