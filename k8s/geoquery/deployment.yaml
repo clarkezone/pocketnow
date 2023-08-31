@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pocketnow-frontend
+  name: pocketnow-geoquery
   labels:
     app: kust
 spec:
@@ -16,7 +16,7 @@ spec:
         app: kust
     spec:
       containers:
-        - name: pocketnow-frontend
+        - name: pocketnow-geoquery
           #image: registry.dev.clarkezone.dev/pocketnow:latest
           #image: registry.hub.docker.com/clarkezone/pocketnow:0.0.3
           image: registry.hub.docker.com/clarkezone/pocketnow:dotnet8-manual-arm64
