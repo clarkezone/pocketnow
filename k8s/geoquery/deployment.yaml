@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: pocketnow-geoquery
-          image: registry.hub.docker.com/clarkezone/pocketnow:dotnet8-manual-arm64
+          image: registry.hub.docker.com/clarkezone/pocketnow:dotnet8-manual-arm64-2
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
