@@ -10,7 +10,7 @@ namespace pocketnow
             var group = routes.MapGroup("/");
             group.MapGet("/", async () =>
                 {
-                    var serviceurl = Environment.GetEnvironmentVariable("GEO_CACHE_SERVICEURL") ?? string.Empty;
+                    var serviceurl = Environment.GetEnvironmentVariable("SERVICEURL") ?? string.Empty;
                     Console.WriteLine($"SERVICEURL: {serviceurl}");
 
                     var geoService = new GeoService();
