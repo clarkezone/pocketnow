@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using Grpc.Net.Client;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace pocketnow
 {
@@ -19,8 +21,11 @@ namespace pocketnow
                     try
                     {
                         var last = await wlient.GetLastLocationAsync(new GrpcGeoCacheService.Empty());
+			var x = (float)last.Geometry.Coordinates[0];
+			var y = (float)last.Geometry.Coordinates[1];
+			Console.WriteLine($"Got point: {last}, x:{x} y:{y}");
 
-                        var address = await geoService.AddressFromPoint((float)last.Geometry.Coordinates[0], (float)last.Geometry.Coordinates[1]);
+                        var address = await geoService.AddressFromPoint(x, y);
                         Returned r = new Returned()
                         {
                             City = address?.address?.City ?? "",
@@ -37,7 +42,7 @@ namespace pocketnow
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex.Message);
+                        Console.WriteLine(ex.Message);
                         return Results.NotFound();
                     }
                 });
@@ -63,50 +68,39 @@ namespace pocketnow
         public DateTime TimeStamp = DateTime.MinValue;
     }
 
-    public record AddressRec
-    {
-        public string Match_addr = "";
-        public string LongLabel = "";
-        public string ShortLabel = "";
-        public string Addr_type = "";
-        public string Type = "";
-        public string PlaceName = "";
-        public string AddNum = "";
-        public string Address = "";
-        public string Block = "";
-        public string Sector = "";
-        public string Neighborhood = "";
-        public string District = "";
-        public string City = "";
-        public string MetroArea = "";
-        public string Subregion = "";
-        public string Region = "";
-        public string RegionAbbr = "";
-        public string Territory = "";
-        public string Postal = "";
-        public string PostalExt = "";
-        public string CntryName = "";
-        public string CountryCode = "";
-    }
+    public record AddressRec(string Match_addr,
+                          string LongLabel,
+                          string ShortLabel,
+                          string Addr_type,
+                          string Type,
+                          string PlaceName,
+                          string AddNum,
+                          string Address,
+                          string Block,
+                          string Sector,
+                          string Neighborhood,
+                          string District,
+                          string City,
+                          string MetroArea,
+                          string Subregion,
+                          string Region,
+                          string RegionAbbr,
+                          string Territory,
+                          string Postal,
+                          string PostalExt,
+                          string CntryName,
+                          string CountryCode) {
 
-    public record Location
-    {
-        public double x = 0;
-        public double y = 0;
-        public SpatialReference spatialReference = new SpatialReference();
-    }
+			  }
 
-    public record Root
-    {
-        public AddressRec address = new AddressRec();
-        public Location location = new Location();
-    }
+    public record Location(
+        double x,
+        double y,
+        SpatialReference spatialReference) {};
 
-    public record SpatialReference
-    {
-        public int wkid { get; set; }
-        public int latestWkid { get; set; }
-    }
+    public record Root(AddressRec address, Location location){};
+
+    public record SpatialReference(int wk, int lw){};
 
     public record Item
     {
