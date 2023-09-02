@@ -26,18 +26,16 @@ namespace pocketnow
 			Console.WriteLine($"Got point: {last}, x:{x} y:{y}");
 
                         var address = await geoService.AddressFromPoint(x, y);
-                        Returned r = new Returned()
-                        {
-                            City = address?.address?.City ?? "",
-                            Neighborhood = address?.address?.Neighborhood ?? "",
-                            Country = address?.address?.CountryCode ?? "",
-                            MetroArea = address?.address?.MetroArea ?? "",
-                            Postal = address?.address?.Postal ?? "",
-                            PhoneStatus = last.Properties?.BatteryState ?? "",
-                            Wifi = last.Properties?.Wifi ?? "",
-                            Batterylevel = (float)(last.Properties?.BatteryLevel ?? 0.0),
-                            TimeStamp = last.Properties?.Timestamp.ToDateTime() ?? DateTime.MinValue,
-                        };
+                        Returned r = new Returned(
+                            address?.address?.City ?? "",
+                            address?.address?.Neighborhood ?? "",
+                            address?.address?.CountryCode ?? "",
+                            address?.address?.MetroArea ?? "",
+                            address?.address?.Postal ?? "",
+                            last.Properties?.BatteryState ?? "",
+                            last.Properties?.Wifi ?? "",
+                            (float)(last.Properties?.BatteryLevel ?? 0.0),
+                            last.Properties?.Timestamp.ToDateTime() ?? DateTime.MinValue) ;
                         return Results.Json(r);
                     }
                     catch (Exception ex)
@@ -54,19 +52,17 @@ namespace pocketnow
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 
-    public record Returned
-    {
-        public string City = "";
-        public string Neighborhood = "";
-        public string MetroArea = "";
-        public string PhoneStatus = "";
-        public string Postal = "";
-        public string Country = "";
-        public string Wifi = "";
-        public float Batterylevel = 0;
-        public string BatterylevelString = "";
-        public DateTime TimeStamp = DateTime.MinValue;
-    }
+    public record Returned(
+        string City,
+        string Neighborhood,
+        string MetroArea,
+        string PhoneStatus,
+        string Postal,
+        string Country,
+        string Wifi,
+        float Batterylevel,
+        DateTime TimeStamp){
+    };
 
     public record AddressRec(string Match_addr,
                           string LongLabel,
