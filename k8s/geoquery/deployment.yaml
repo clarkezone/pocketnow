@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pocketnow-frontend
+  name: pocketnow-geoquery
   labels:
     app: kust
 spec:
@@ -16,21 +16,19 @@ spec:
         app: kust
     spec:
       containers:
-        - name: pocketnow-frontend
-          #image: registry.dev.clarkezone.dev/pocketnow:latest
-          #image: registry.hub.docker.com/clarkezone/pocketnow:0.0.3
+        - name: pocketnow-geoquery
           image: registry.hub.docker.com/clarkezone/pocketnow:dotnet8-manual-arm64-2
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
           env:
-            - name: SERVICEURL
+            - name: COSMOSDB_URL
               valueFrom:
-                configMapKeyRef:
-                  name: pocketnowconfig
-                  key: SERVICEURL
-            - name: NOWMODE
+                secretKeyRef:
+                  name: pocketnowcosmossecrets
+                  key: COSMOSDB_URL
+            - name: COSMOSDB_KEY
               valueFrom:
-                configMapKeyRef:
-                  name: pocketnowconfig
-                  key: NOWMODE
+                secretKeyRef:
+                  name: pocketnowcosmossecrets
+                  key: COSMOSDB_KEY

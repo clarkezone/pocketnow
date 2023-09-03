@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using Grpc.Net.Client;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace pocketnow
 {
@@ -7,18 +9,10 @@ namespace pocketnow
     {
         public static RouteGroupBuilder MapGeoGeoService(this IEndpointRouteBuilder routes)
         {
-
-            var group = routes.MapGroup("/oldfrontend");
+            var group = routes.MapGroup("/");
             group.MapGet("/", async () =>
                 {
-
-                    var pbhost = Environment.GetEnvironmentVariable("GEO_CACHE_HOST") ?? string.Empty;
-                    var un = Environment.GetEnvironmentVariable("GEO_CACHE_UN") ?? string.Empty;
-                    var pw = Environment.GetEnvironmentVariable("GEO_CACHE_PW") ?? string.Empty;
-                    var serviceurl = Environment.GetEnvironmentVariable("GEO_CACHE_SERVICEURL") ?? string.Empty;
-                    Console.WriteLine($"Host: {pbhost}");
-                    Console.WriteLine($"Username: {un}");
-                    Console.WriteLine($"Password: {pw}");
+                    var serviceurl = Environment.GetEnvironmentVariable("SERVICEURL") ?? string.Empty;
                     Console.WriteLine($"SERVICEURL: {serviceurl}");
 
                     var geoService = new GeoService();
@@ -27,25 +21,26 @@ namespace pocketnow
                     try
                     {
                         var last = await wlient.GetLastLocationAsync(new GrpcGeoCacheService.Empty());
+			var x = (float)last.Geometry.Coordinates[0];
+			var y = (float)last.Geometry.Coordinates[1];
+			Console.WriteLine($"Got point: {last}, x:{x} y:{y}");
 
-                        var address = await geoService.AddressFromPoint((float)last.Geometry.Coordinates[0], (float)last.Geometry.Coordinates[1]);
-                        Returned r = new Returned()
-                        {
-                            City = address?.address?.City ?? "",
-                            Neighborhood = address?.address?.Neighborhood ?? "",
-                            Country = address?.address?.CountryCode ?? "",
-                            MetroArea = address?.address?.MetroArea ?? "",
-                            Postal = address?.address?.Postal ?? "",
-                            PhoneStatus = last.Properties?.BatteryState ?? "",
-                            Wifi = last.Properties?.Wifi ?? "",
-                            Batterylevel = (float)(last.Properties?.BatteryLevel ?? 0.0),
-                            TimeStamp = last.Properties?.Timestamp.ToDateTime() ?? DateTime.MinValue,
-                        };
+                        var address = await geoService.AddressFromPoint(x, y);
+                        Returned r = new Returned(
+                            address?.address?.City ?? "",
+                            address?.address?.Neighborhood ?? "",
+                            address?.address?.CountryCode ?? "",
+                            address?.address?.MetroArea ?? "",
+                            address?.address?.Postal ?? "",
+                            last.Properties?.BatteryState ?? "",
+                            last.Properties?.Wifi ?? "",
+                            (float)(last.Properties?.BatteryLevel ?? 0.0),
+                            last.Properties?.Timestamp.ToDateTime() ?? DateTime.MinValue) ;
                         return Results.Json(r);
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex.Message);
+                        Console.WriteLine(ex.Message);
                         return Results.NotFound();
                     }
                 });
@@ -57,64 +52,51 @@ namespace pocketnow
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 
-    public record Returned
-    {
-        public string City = "";
-        public string Neighborhood = "";
-        public string MetroArea = "";
-        public string PhoneStatus = "";
-        public string Postal = "";
-        public string Country = "";
-        public string Wifi = "";
-        public float Batterylevel = 0;
-        public string BatterylevelString = "";
-        public DateTime TimeStamp = DateTime.MinValue;
-    }
+    public record Returned(
+        string City,
+        string Neighborhood,
+        string MetroArea,
+        string PhoneStatus,
+        string Postal,
+        string Country,
+        string Wifi,
+        float Batterylevel,
+        DateTime TimeStamp){
+    };
 
-    public record AddressRec
-    {
-        public string Match_addr = "";
-        public string LongLabel = "";
-        public string ShortLabel = "";
-        public string Addr_type = "";
-        public string Type = "";
-        public string PlaceName = "";
-        public string AddNum = "";
-        public string Address = "";
-        public string Block = "";
-        public string Sector = "";
-        public string Neighborhood = "";
-        public string District = "";
-        public string City = "";
-        public string MetroArea = "";
-        public string Subregion = "";
-        public string Region = "";
-        public string RegionAbbr = "";
-        public string Territory = "";
-        public string Postal = "";
-        public string PostalExt = "";
-        public string CntryName = "";
-        public string CountryCode = "";
-    }
+    public record AddressRec(string Match_addr,
+                          string LongLabel,
+                          string ShortLabel,
+                          string Addr_type,
+                          string Type,
+                          string PlaceName,
+                          string AddNum,
+                          string Address,
+                          string Block,
+                          string Sector,
+                          string Neighborhood,
+                          string District,
+                          string City,
+                          string MetroArea,
+                          string Subregion,
+                          string Region,
+                          string RegionAbbr,
+                          string Territory,
+                          string Postal,
+                          string PostalExt,
+                          string CntryName,
+                          string CountryCode) {
 
-    public record Location
-    {
-        public double x = 0;
-        public double y = 0;
-        public SpatialReference spatialReference = new SpatialReference();
-    }
+			  }
 
-    public record Root
-    {
-        public AddressRec address = new AddressRec();
-        public Location location = new Location();
-    }
+    public record Location(
+        double x,
+        double y,
+        SpatialReference spatialReference) {};
 
-    public record SpatialReference
-    {
-        public int wkid { get; set; }
-        public int latestWkid { get; set; }
-    }
+    public record Root(AddressRec address, Location location){};
+
+    public record SpatialReference(int wk, int lw){};
 
     public record Item
     {

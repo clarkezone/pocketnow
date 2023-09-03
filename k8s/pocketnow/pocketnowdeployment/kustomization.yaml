@@ -6,13 +6,8 @@ commonLabels:
 resources:
   - deployment.yaml
   - service.yaml
-secretGenerator:
-  - name: pocketnowcosmossecrets
-    envs:
-      - .cosmosdbsecrets.env
 configMapGenerator:
   - name: pocketnowconfig
     literals:
       - SERVICEURL=http://geocache-be-service:8090
-      - UN=james@clarkezone.net
-      - HOST=http://pb-service:8080
+      - NOWMODE=TRUE
