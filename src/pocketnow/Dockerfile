@@ -1,5 +1,5 @@
-# https://hub.docker.com/_/microsoft-dotnet
-#FROM mcr.microsoft.com/dotnet/sdk:8.0.100-preview.7-bookworm-slim AS build
+# use this to debug docker build . --no-cache --progress=plain 
+
 FROM --platform=$BUILDPLATFORM  mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
 ARG TARGETARCH
 
@@ -7,9 +7,16 @@ WORKDIR /source
 
 # copy csproj and restore as distinct layers
 COPY pocketnow.sln .
-COPY pocketnow.lib/*.csproj .
-COPY pocketnow.service/*.csproj .
-COPY pocketnow.Tests/*.csproj .
+# dest folders aren't created automatically
+RUN mkdir pocketnow.lib
+RUN mkdir pocketnow.service
+RUN mkdir pocketnow.Tests
+COPY pocketnow.lib/pocketnow.lib.csproj pocketnow.lib/.
+COPY pocketnow.service/*.csproj pocketnow.service/. 
+COPY pocketnow.Tests/*.csproj pocketnow.Tests/.
+# verify things are where expected
+#RUN ls -al
+#RUN ls -al pocketnow.lib
 RUN dotnet restore -a $TARGETARCH pocketnow.sln
 
 

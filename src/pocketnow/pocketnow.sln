@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pocketnow.Tests", "..\pocketnow.Tests\pocketnow.Tests.csproj", "{4ABF1CE8-0284-4F56-B4A3-2063179CF4AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pocketnow.Tests", "pocketnow.Tests\pocketnow.Tests.csproj", "{4ABF1CE8-0284-4F56-B4A3-2063179CF4AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pocketnow", "..\pocketnow.service\pocketnow.csproj", "{27D9CB88-D1F7-4F31-BFDA-D358A3B12766}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pocketnow", "pocketnow.service\pocketnow.csproj", "{27D9CB88-D1F7-4F31-BFDA-D358A3B12766}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pocketnow.lib", "..\pocketnow.lib\pocketnow.lib.csproj", "{ADDD7060-77C2-4AFC-8328-23C6CCD11E5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pocketnow.lib", "pocketnow.lib\pocketnow.lib.csproj", "{ADDD7060-77C2-4AFC-8328-23C6CCD11E5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
