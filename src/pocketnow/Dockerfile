@@ -1,6 +1,8 @@
 # use this to debug docker build . --no-cache --progress=plain 
 
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/nightly/sdk:8.0-jammy-aot AS build
+#FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/nightly/sdk:8.0-jammy-aot AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
 
 ARG TARGETARCH
 
@@ -20,8 +22,8 @@ COPY pocketnow.Tests/*.csproj pocketnow.Tests/.
 #RUN ls -al pocketnow.lib
 RUN dotnet restore -a $TARGETARCH
 
-COPY . ./
-RUN dotnet publish -a $TARGETARCH --no-restore -o /app
+#COPY . ./
+#RUN dotnet publish -a $TARGETARCH --no-restore -o /app
 
 ## copy everything else and build app
 #WORKDIR /source/
