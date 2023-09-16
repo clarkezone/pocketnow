@@ -1,7 +1,7 @@
 # use this to debug docker build . --no-cache --progress=plain 
 
-#FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/nightly/sdk:8.0-jammy-aot AS build
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/nightly/sdk:8.0-jammy-aot AS build
+#FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 
 ARG TARGETARCH
@@ -15,7 +15,11 @@ RUN mkdir pocketnow.lib
 RUN mkdir pocketnow.service
 RUN mkdir pocketnow.Tests
 COPY pocketnow.lib/pocketnow.lib.csproj pocketnow.lib/.
+COPY pocketnow.lib/nuget.config pocketnow.lib/.
+
 COPY pocketnow.service/*.csproj pocketnow.service/. 
+COPY pocketnow.service/nuget.config pocketnow.service/.
+
 COPY pocketnow.Tests/*.csproj pocketnow.Tests/.
 # verify things are where expected
 #RUN ls -al
