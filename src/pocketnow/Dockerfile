@@ -22,6 +22,22 @@ COPY pocketnow.Tests/*.csproj pocketnow.Tests/.
 #RUN ls -al pocketnow.lib
 RUN dotnet restore -a $TARGETARCH
 
+# copy and publish app and libraries
+COPY . ./
+RUN dotnet publish -a $TARGETARCH --no-restore -o /app
+
+
+# final stage/image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build /app .
+USER $APP_UID
+
+ENV ASPNETCORE_URLS=http://0.0.0.0:5000;
+EXPOSE 5000
+ENTRYPOINT ["dotnet", "pocketnow.dll"]
+
+
 #COPY . ./
 #RUN dotnet publish -a $TARGETARCH --no-restore -o /app
 
