@@ -1,0 +1,20 @@
+# cloudflared tunnel create hellodotnet7
+# cloudflared tunnel route dns hellodotnet7 hellodotnet7.clarkezone.dev
+# cloudflared tunnel list
+# cp ~/.cloudflared/900789a9-0366-4b7d-9865-033668077a8a.json secrets/.
+# replace guid in this file and kustomization
+# rename tunnel
+# fix hostname
+
+tunnel: pocketnow-stage
+#must be in creds sub directory:
+credentials-file: /etc/cloudflared/creds/395f1f03-b92c-4750-8de8-547ac715a4a7.json
+
+metrics: 0.0.0.0:2000
+no-autoupdate: true
+ingress:
+- hostname: pocketnow-stage.clarkezone.dev
+  service: http://pocketnow-service:5000
+# This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
+- service: http_status:404
+#cloudflared tunnel —-originCertPath /etc/cloudflared/creds/cert.pem --config /etc/cloudflared/config/config.yaml run 
